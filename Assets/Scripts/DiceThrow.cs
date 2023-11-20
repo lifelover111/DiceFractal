@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class DiceThrow : MonoBehaviour
 {
-    public Vector3Int DirectionValues;
+    private Vector3Int DirectionValues = new Vector3Int(4, 2, 1);
     private Vector3Int OpposingDirectionValues;
     private int[] FaceRepresent = new int[] { 1, 2, 3, 4, 5, 6 };
     public Rigidbody diceRigidbody;
     public float force = 10f;
+    public Vector3 tossDirection = Vector3.up;
+    public float tossForce = 10f;
 
     void Start()
     {
@@ -19,15 +21,16 @@ public class DiceThrow : MonoBehaviour
 
     public void ThrowDice()
     {
-
-
         if (diceRigidbody != null)
         {
 
             diceRigidbody.velocity = Vector3.zero;
             diceRigidbody.angularVelocity = Vector3.zero;
 
-            diceRigidbody.AddForce(Random.onUnitSphere * force, ForceMode.Impulse);
+            diceRigidbody.AddForce(tossDirection * tossForce, ForceMode.Impulse);
+            diceRigidbody.AddTorque(Random.insideUnitSphere * force, ForceMode.Impulse);
+            diceRigidbody.AddTorque(Random.insideUnitSphere * force * 1.5f, ForceMode.Impulse);
+            //diceRigidbody.AddForce(Random.onUnitSphere * force, ForceMode.Impulse);
             StartCoroutine(GetUpperSideNumberCoroutine());
         }
         else
@@ -38,13 +41,15 @@ public class DiceThrow : MonoBehaviour
 
     IEnumerator GetUpperSideNumberCoroutine()
     {
-       
-        // пока не придумал
-        yield return new WaitForSeconds(3);
+        yield return new WaitWhile(() => diceRigidbody.angularVelocity == Vector3.zero);
+
+        while (diceRigidbody.angularVelocity != Vector3.zero)
+        {
+            yield return null; 
+        }
 
         int sideNum = DetermineNumber();
         Debug.Log(sideNum);
-   
     }
 
     public int DetermineNumber()
