@@ -7,6 +7,9 @@ using UnityEngine.Events;
 [CreateAssetMenu(menuName = "Ability", fileName = "new Ability")]
 public class Ability : ScriptableObject
 {
+
+    public Sprite abilityIcon;
+
     [System.Serializable]
     class Cost
     {
