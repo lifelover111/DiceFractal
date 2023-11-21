@@ -7,48 +7,137 @@ public class Fight
 {
     public Character[] characters;
     public Enemy[] enemies;
-    public List<Dice> dices = new List<Dice>();
+    public List<KeyValuePair<int, Transform>> dices = new List<KeyValuePair<int, Transform>>();
     FightController fightController;
+    int requiredDiceNum;
 
-    public Fight(Character[] characters, int startDices, int enemiesNum = 0)
+    public Fight(Character[] characters, int enemiesNum = 0)
     {
         fightController = FightController.instance;
         this.characters = characters;
         if (enemiesNum == 0)
-            enemies = new Enemy[Random.Range(0, 4)];
+            enemies = new Enemy[Random.Range(1, 4)];
         else
             enemies = new Enemy[enemiesNum];
         for(int i = 0; i < enemies.Length; i++)
         {
-            enemies[i] = SpawnEnemy();
+            SpawnEnemy(i);
         }
+        fightController.currentFight = this;
+        StartFight();
+    }
 
-        for(int i = 0; i < startDices; i++) 
+    void StartFight()
+    {
+        GameObject dice = Object.Instantiate(GameManager.instance.dicePrefab);
+        dice.transform.position = GameManager.instance.dicesPosition;
+        DiceThrow diceThrow = dice.GetComponent<DiceThrow>();
+        diceThrow.OnValueGot += () =>
         {
-            dices.Add(new Dice());
+            requiredDiceNum = diceThrow.GetValue().Key;
+            Zoom zoom = dice.GetComponent<Zoom>();
+            zoom.enabled = true;
+            zoom.OnZoom += () =>
+            {
+                for (int i = 0; i < diceThrow.GetValue().Key; i++)
+                {
+                    RollDice(diceThrow.GetValue().Value.GetChild(i));
+                }
+            };
+        };
+        diceThrow.ThrowDice();
+    }
+
+    void RollDice(Transform targetTransform) 
+    {
+        GameObject dice = Object.Instantiate(GameManager.instance.dicePrefab);
+        dice.transform.position = GameManager.instance.dicesPosition;
+        dice.transform.position += targetTransform.rotation * targetTransform.localPosition * 8;
+        Vector3 dicePos = dice.transform.position;
+        dicePos.z = -0.75f;
+        dice.transform.position = dicePos;
+        DiceThrow diceThrow = dice.GetComponent<DiceThrow>();
+        diceThrow.OnValueGot += () =>
+        {
+            dices.Add(diceThrow.GetValue());
+            if (dices.Count == requiredDiceNum)
+                StartTurn();
+        };
+        diceThrow.ThrowDice();
+    }
+
+    void SpawnEnemy(int num)
+    {
+        GameObject go = Object.Instantiate(GameManager.instance.enemyPrafabs[Random.Range(0, GameManager.instance.enemyPrafabs.Length)]);
+        enemies[num] = go.GetComponent<Enemy>();
+        go.transform.position = new Vector3(5*(num + 1),0,0);
+    }
+
+    public void RemoveEnemy(Enemy enemy)
+    {
+        Enemy[] newEnemies = new Enemy[enemies.Length - 1];
+        int i = 0;
+        foreach(var e in enemies)
+        {
+            if(e != enemy)
+            {
+                newEnemies[i] = e;
+                i++;
+            }
         }
+        enemies = newEnemies;
     }
 
-    Enemy SpawnEnemy()
+    public void StartTurn()
     {
-        ///
-        Enemy enemy = new Enemy();
-        return enemy;
-    }
-
-    void StartTurn()
-    {
-        fightController.DoTurn(this);
+        fightController.DoTurn();
     }
 
     public void EndTurn()
     {
-        int dicesNumNext = dices.Min(dice => dice.value);
-        dices.Clear();
-        for(int i = 0; i < dicesNumNext; i++)
+        KeyValuePair<int, Transform> diceNext = dices.OrderBy(dice => dice.Key).FirstOrDefault();
+        RemoveDices(diceNext);
+        Zoom zoom = diceNext.Value.parent.gameObject.GetComponent<Zoom>();
+        zoom.enabled = true;
+        zoom.OnZoom += () =>
         {
-            dices.Add(new Dice());
+            Object.Destroy(diceNext.Value.parent.gameObject);
+            requiredDiceNum = diceNext.Key;
+            for (int i = 0; i < diceNext.Key; i++)
+            {
+                RollDice(diceNext.Value.GetChild(i));
+            }
+        };
+    }
+    
+    public void EndTurn(int dice)
+    {
+        KeyValuePair<int, Transform> diceNext = dices.Where(d => d.Key == dice).FirstOrDefault();
+        RemoveDices(diceNext);
+        Zoom zoom = diceNext.Value.parent.gameObject.GetComponent<Zoom>();
+        zoom.enabled = true;
+        zoom.OnZoom += () =>
+        {
+            Object.Destroy(diceNext.Value.parent.gameObject);
+            requiredDiceNum = diceNext.Key;
+            for (int i = 0; i < diceNext.Key; i++)
+            {
+                RollDice(diceNext.Value.GetChild(i));
+            }
+        };
+    }
+
+
+    void RemoveDices(KeyValuePair<int, Transform>? except = null)
+    {
+        if(except != null)
+        {
+            dices.Remove(except.Value);
         }
-        StartTurn();
+        foreach(var d in dices)
+        {
+            Object.Destroy(d.Value.parent.gameObject);
+        }
+        dices.Clear();
     }
 }

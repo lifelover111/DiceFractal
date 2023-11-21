@@ -4,9 +4,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
-
-[CreateAssetMenu(menuName = "Item", fileName = "new Item")]
-public class Item : ScriptableObject
+[CreateAssetMenu(menuName = "Ability", fileName = "new Ability")]
+public class Ability : ScriptableObject
 {
     [System.Serializable]
     class Cost
@@ -39,15 +38,29 @@ public class Item : ScriptableObject
 
     }
 
-    [SerializeField] Cost price;
     [SerializeField] UnityEvent OnUse;
+    [SerializeField] Cost cost;
 
-    public bool CheckPrice(int value)
-    {
-        return price.Contains(value);
-    }
-    public void Use(int dice)
+    public void Use()
     {
         OnUse?.Invoke();
     }
+
+    public int AbilityCost()
+    {
+        return cost.AbilityCost();
+    }
+    public bool CheckCost(int[] dices)
+    {
+        return cost.CheckCost(dices);
+    }
+    public int GetDice(int[] dices)
+    {
+        return dices.Where(dice => cost.Contains(dice)).Min();
+    }
+    public string GetStringCost() 
+    {
+        return cost.GetStringCost();
+    }
 }
+

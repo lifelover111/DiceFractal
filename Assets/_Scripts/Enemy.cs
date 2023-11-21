@@ -4,5 +4,9 @@ using UnityEngine;
 
 public class Enemy : Person
 {
-    
+    protected override void Die()
+    {
+        FightController.instance.currentFight.RemoveEnemy(this);
+        base.Die();
+    }
 }

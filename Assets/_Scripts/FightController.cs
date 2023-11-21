@@ -2,60 +2,78 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 public class FightController : MonoBehaviour
 {
     public static FightController instance;
-    Fight currentFight;
+    public Fight currentFight;
     [SerializeField] Transform endTurnButton;
+
     private void Awake()
     {
         instance = this;
     }
 
-    void StartNewFight()
+
+    public void DoTurn()
     {
-        //Fight fight = new Fight()
-        /*
-        Button button = endTurnButton.GetComponent<Button>();
-        button.onClick.RemoveAllListeners();
-        button.onClick.AddListener(() => { fight.EndTurn(); });
-        */
+        StartCoroutine(TurnCoroutine());
     }
 
-    public void DoTurn(Fight fight)
+    public void EndTurn()
     {
-        currentFight = fight;
-        StartCoroutine(TurnCoroutine());
+        currentFight.EndTurn();
+        endTurnButton.gameObject.SetActive(false);
+        foreach (var c in currentFight.characters)
+            c.abilityTurnButton.gameObject.SetActive(false);
+    }
+
+    public void EndTurnAbility(int dice)
+    {
+        currentFight.EndTurn(dice);
+        endTurnButton.gameObject.SetActive(false);
     }
 
     IEnumerator TurnCoroutine()
     {
-        foreach(var dice in currentFight.dices)
+        foreach (var dice in currentFight.dices.OrderByDescending(dice => dice.Key))
         {
-            foreach(var enemy in currentFight.enemies)
+            foreach (var enemy in currentFight.enemies)
             {
-                yield return enemy.StartCoroutine(EnemyTurnCoroutine(enemy));
+                yield return enemy.StartCoroutine(EnemyTurnCoroutine(enemy, dice.Key));
             }
-        }
-        foreach (var dice in currentFight.dices)
-        {
             foreach (var character in currentFight.characters)
             {
-                yield return character.StartCoroutine(PlayerTurnCoroutine(character));
+                yield return character.StartCoroutine(PlayerTurnCoroutine(character, dice.Key));
             }
         }
         endTurnButton.gameObject.SetActive(true);
+        foreach(var c in currentFight.characters)
+        {
+            if(c.ability.CheckCost(currentFight.dices.Select(d => d.Key).ToArray()))
+            {
+                c.abilityTurnButton.gameObject.SetActive(true);
+            }
+        }
     }
 
-    IEnumerator EnemyTurnCoroutine(Enemy enemy)
+    IEnumerator EnemyTurnCoroutine(Enemy enemy, int dice)
     {
-        yield return new WaitForSeconds(2.0f);
+        if (enemy.usableItem?.CheckPrice(dice) ?? false)
+        {
+            enemy.usableItem.Use(dice);
+            yield return new WaitForSeconds(2f);
+        }
     }
 
-    IEnumerator PlayerTurnCoroutine(Character character)
+    IEnumerator PlayerTurnCoroutine(Character character, int dice)
     {
-        yield return new WaitForSeconds(2.0f);
+        if (character.usableItem?.CheckPrice(dice) ?? false)
+        {
+            character.usableItem.Use(dice);
+            yield return new WaitForSeconds(2f);
+        }
     }
 }
