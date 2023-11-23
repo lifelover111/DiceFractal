@@ -10,6 +10,7 @@ public class FightController : MonoBehaviour
     public static FightController instance;
     public Fight currentFight;
     [SerializeField] Transform endTurnButton;
+    [SerializeField] Transform pointer;
 
     private void Awake()
     {
@@ -38,42 +39,73 @@ public class FightController : MonoBehaviour
 
     IEnumerator TurnCoroutine()
     {
-        foreach (var dice in currentFight.dices.OrderByDescending(dice => dice.Key))
+        if (currentFight.enemies.Length > 0)
         {
-            foreach (var enemy in currentFight.enemies)
+            foreach (var dice in currentFight.dices.OrderByDescending(dice => dice.Key))
             {
-                yield return enemy.StartCoroutine(EnemyTurnCoroutine(enemy, dice.Key));
+                Material diceMat = dice.Value.parent.gameObject.GetComponent<MeshRenderer>().material;
+                diceMat.color = Color.Lerp(diceMat.color, Color.green, 0.5f);
+                foreach (var enemy in currentFight.enemies)
+                {
+                    if (currentFight.characters.Where(c => !c.isDead).Count() > 0)
+                        yield return enemy.StartCoroutine(EnemyTurnCoroutine(enemy, dice.Key));
+                }
+                foreach (var character in currentFight.characters)
+                {
+                    yield return character.StartCoroutine(PlayerTurnCoroutine(character, dice.Key));
+                }
+                diceMat.color = Color.white;
             }
-            foreach (var character in currentFight.characters)
+            endTurnButton.gameObject.SetActive(true);
+            foreach (var c in currentFight.characters)
             {
-                yield return character.StartCoroutine(PlayerTurnCoroutine(character, dice.Key));
+                if (!c.isDead && c.ability.CheckCost(currentFight.dices.Select(d => d.Key).ToArray()))
+                {
+                    c.abilityTurnButton.gameObject.SetActive(true);
+                }
             }
         }
-        endTurnButton.gameObject.SetActive(true);
-        foreach(var c in currentFight.characters)
-        {
-            if(c.ability.CheckCost(currentFight.dices.Select(d => d.Key).ToArray()))
-            {
-                c.abilityTurnButton.gameObject.SetActive(true);
-            }
+        else
+        { 
+            currentFight.RemoveDices();
         }
     }
 
     IEnumerator EnemyTurnCoroutine(Enemy enemy, int dice)
     {
-        if (enemy.usableItem?.CheckPrice(dice) ?? false)
-        {
-            enemy.usableItem.Use(dice);
-            yield return new WaitForSeconds(2f);
-        }
+        if (!enemy.isDead)
+            if (enemy.usableItem?.CheckPrice(dice) ?? false)
+            {
+                pointer.gameObject.SetActive(true);
+                Vector3 pos = pointer.position;
+                pos.x = enemy.transform.position.x;
+                pointer.position = pos;
+                yield return StartCoroutine(enemy.UseItem(dice));
+                yield return new WaitForSeconds(1f);
+                pointer.gameObject.SetActive(false);
+            }
     }
 
     IEnumerator PlayerTurnCoroutine(Character character, int dice)
     {
-        if (character.usableItem?.CheckPrice(dice) ?? false)
-        {
-            character.usableItem.Use(dice);
-            yield return new WaitForSeconds(2f);
-        }
+        if (!character.isDead)
+            if (character.usableItem?.CheckPrice(dice) ?? false)
+            {
+                pointer.gameObject.SetActive(true);
+                Vector3 pos = pointer.position;
+                pos.x = character.transform.position.x;
+                pointer.position = pos;
+                yield return StartCoroutine(character.UseItem(dice));
+                yield return new WaitForSeconds(1f);
+                pointer.gameObject.SetActive(false);
+            }
+    }
+
+    public void EndFight()
+    {
+        pointer.gameObject.SetActive(false);
+        StopAllCoroutines();
+        foreach(var c in currentFight.characters)
+            c.StopAllCoroutines();
     }
 }

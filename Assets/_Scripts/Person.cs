@@ -8,6 +8,9 @@ public abstract class Person : MonoBehaviour, IHealth
     [Header("Set in inspector: ")]
     public int totalHealth;
     public Item usableItem;
+    protected Animator anim;
+
+    public bool isDead = false;
 
     public float health { get; private set; }
     public float maxHealth { get; private set; }
@@ -16,24 +19,46 @@ public abstract class Person : MonoBehaviour, IHealth
     {
         maxHealth = totalHealth;
         health = maxHealth;
+        anim = GetComponent<Animator>();
     }
 
-    public void TakeDamage(float damage)
+    public virtual void TakeDamage(float damage)
     {
-        health -= damage;
-        health = health < 0 ? 0 : health;
-        if (health == 0)
-            Die();
+        anim.SetBool("Hit", true);
+        StartCoroutine(TakeDamageCoroutine(damage));
     }
 
-    public void Heal(float heal)
+    public virtual void Heal(float heal)
     {
         health += heal;
         health = health > maxHealth ? maxHealth : health;
     }
+    public IEnumerator UseItem(int dice)
+    {
+        anim.SetBool("Item", true);
+        while (anim.GetBool("Item"))
+            yield return null;
+        usableItem.Use(dice);
+    }
 
     protected virtual void Die()
     {
-        Destroy(gameObject);
+        isDead = true;
+    }
+
+    protected virtual IEnumerator TakeDamageCoroutine(float damage)
+    {
+        while (anim.GetBool("Hit"))
+        {
+            yield return null; 
+        }
+        health -= damage;
+        health = health < 0 ? 0 : health;
+
+        if (health == 0)
+        {
+            anim.SetBool("Die", true);
+            Die();
+        }
     }
 }

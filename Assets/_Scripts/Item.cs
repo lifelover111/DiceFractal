@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -40,7 +41,8 @@ public class Item : ScriptableObject
     }
 
     [SerializeField] Cost price;
-    [SerializeField] UnityEvent OnUse;
+    [SerializeField] UnityEvent action;
+    public event System.Action OnUse = () => { };
 
     public bool CheckPrice(int value)
     {
@@ -49,5 +51,10 @@ public class Item : ScriptableObject
     public void Use(int dice)
     {
         OnUse?.Invoke();
+        action?.Invoke();
+    }
+    public bool CompareEffect(System.Action a)
+    {
+        return a.GetMethodInfo().Name == action.GetPersistentMethodName(0);
     }
 }

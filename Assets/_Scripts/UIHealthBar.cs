@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class UIHealthBar : MonoBehaviour
 {
     [SerializeField] bool fade = true;
     [SerializeField] float fadeTime = 5;
+    [SerializeField] TMP_Text text;
 
     IHealth target;
     GameObject healthLine;
@@ -27,6 +29,7 @@ public class UIHealthBar : MonoBehaviour
             Fade();
         healthLine.transform.localScale = Vector3.Lerp(Vector3.one, new Vector3(0, 1, 1), 1 - target.health/target.maxHealth);
         healthLine.transform.localPosition = Vector3.Lerp(Vector3.zero, new Vector3(-0.6f, 0, 0), 1 - target.health / target.maxHealth);
+        text.text = target.health.ToString() + '/' + target.maxHealth.ToString();
     }
 
     void Fade()

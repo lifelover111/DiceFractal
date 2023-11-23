@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -8,30 +10,136 @@ public class GameManager : MonoBehaviour
     public GameObject dicePrefab;
     public GameObject[] enemyPrafabs;
     public Vector3 dicesPosition = new Vector3(0, -1000, 0);
+    [SerializeField] GameObject blackScreen;
+    [SerializeField] Transform forest;
+    [SerializeField] Transform loseScreen;
 
-    [SerializeField] Character[] charactersTest;
+    [SerializeField] Transform[] abilityEndTurnButtons;
+    Character[] characters = new Character[3];
+
+    public int battlesWon = 0;
+    public int enemiesKilled = 0;
+    public int damageDealed = 0;
+    public int damageTaken = 0;
+    public int healthRestored = 0;
 
     private void Awake()
     {
         instance = this;
-        Physics.gravity = new Vector3(0, 0, -Physics.gravity.y);
+        Physics.gravity = new Vector3(0, 0, 9.8f);
+        StaticBatchingUtility.Combine(forest.gameObject);
+        forest.position = new Vector3(Random.Range(-42, 2), 3.2f, 0);
+        SetCharacters();
         PrepareCharacters();
+        foreach (var c in characters)
+            c.OnCharacterDied += () => {
+                if (characters.Where(c => !c.isDead).Count() == 0)
+                    LoseGame();
+            };
     }
     private void Start()
     {
-        Fight fight = new Fight(charactersTest);
+        Fight fight = new Fight(characters);
+        fight.OnFightEnd += () => { battlesWon++; };
+        fight.OnFightEnd += NewFight;
+        fight.StartFight();
     }
+
+    void SetCharacters()
+    {
+        GameObject party = new GameObject("Party");
+        for(int i = 0; i < characters.Length; i++) 
+        {
+            characters[2 - i] = Instantiate(PartyKeeper.instance.GetParty()[i].GetComponent<Character>());
+            characters[2 - i].abilityTurnButton = abilityEndTurnButtons[2 - i];
+            characters[2 - i].transform.SetParent(party.transform, true);
+        }
+        PartyKeeper.instance.Destroy();
+    }
+
     void PrepareCharacters()
     {
-        foreach (Character character in charactersTest)
+        foreach (Character character in characters)
         {
             character.OnAbilityUse += () =>
             {
-                foreach (Character c in charactersTest)
+                foreach (Character c in characters)
                 {
                     c.abilityTurnButton.gameObject.SetActive(false);
                 }
             };
         }
+    }
+    void NewFight()
+    {
+        StartCoroutine(NewFightCoroutine());
+    }
+
+    IEnumerator NewFightCoroutine()
+    {
+        foreach(Character character in characters)
+        {
+            character.GoForward();
+        }
+        blackScreen.gameObject.SetActive(true);
+        SpriteRenderer sRend = blackScreen.GetComponent<SpriteRenderer>();
+        float p = 0;
+        while(sRend.color.a != 1)
+        {
+            Color col = sRend.color;
+            col.a = Mathf.Lerp(0, 1, p);
+            sRend.color = col;
+            p += 0.0015f;
+            foreach (var c in characters)
+            {
+                if(!c.isDead)
+                    c.gameObject.transform.position += 0.015f * Vector3.right;
+            }
+            yield return null;
+        }
+        foreach (var c in characters)
+        {
+            c.SetIdle();
+        }
+        DiceThrow.DestroyAllDicesDelegate.Invoke();
+        forest.position = new Vector3(Random.Range(-42, 2), 3.2f, 0);
+        Fight fight = new Fight(characters);
+
+        fight.OnFightEnd += () => { battlesWon++; };
+        fight.OnFightEnd += NewFight;
+
+        p = 0;
+        while (sRend.color.a != 0)
+        {
+            Color col = sRend.color;
+            col.a = Mathf.Lerp(1, 0, p);
+            sRend.color = col;
+            p += 0.0015f;
+            yield return null;
+        }
+        blackScreen.gameObject.SetActive(false);
+        yield return new WaitForSeconds(0.5f);
+        fight.StartFight();
+    }
+
+    void LoseGame()
+    {
+        loseScreen.gameObject.SetActive(true);
+        Transform statistics = loseScreen.GetChild(1);
+        statistics.GetChild(0).GetComponent<TMP_Text>().text += battlesWon;
+        statistics.GetChild(1).GetComponent<TMP_Text>().text += enemiesKilled;
+        statistics.GetChild(2).GetComponent<TMP_Text>().text += damageDealed;
+        statistics.GetChild(3).GetComponent<TMP_Text>().text += damageTaken;
+        statistics.GetChild(4).GetComponent<TMP_Text>().text += healthRestored;
+    }
+
+    public void BackToMainMenu()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
     }
 }

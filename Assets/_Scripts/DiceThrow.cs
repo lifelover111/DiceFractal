@@ -14,12 +14,17 @@ public class DiceThrow : MonoBehaviour
     public float tossForce = 10f;
     private KeyValuePair<int, Transform> currentValue;
     public event System.Action OnValueGot = () => { };
+    public static System.Action DestroyAllDicesDelegate = () => { };
 
     void Start()
     {
+        DestroyAllDicesDelegate += DestroyThis;
         OpposingDirectionValues = 6 * Vector3Int.one - DirectionValues;
     }
-
+    private void OnDestroy()
+    {
+        DestroyAllDicesDelegate -= DestroyThis;
+    }
 
     public void ThrowDice()
     {
@@ -27,7 +32,7 @@ public class DiceThrow : MonoBehaviour
         diceRigidbody.velocity = Vector3.zero;
         diceRigidbody.angularVelocity = Vector3.zero;
 
-        diceRigidbody.AddForce(tossDirection * tossForce, ForceMode.Impulse);
+        diceRigidbody.AddForce(tossDirection * (tossForce - 2*Random.value), ForceMode.Impulse);
         diceRigidbody.AddTorque(Vector3.forward * Random.Range(1, force), ForceMode.Impulse);
         diceRigidbody.AddTorque(Random.insideUnitSphere * force, ForceMode.Impulse);
         diceRigidbody.AddTorque(Random.insideUnitSphere * force * 1.5f, ForceMode.Impulse);
@@ -89,7 +94,9 @@ public class DiceThrow : MonoBehaviour
         }
         else
         {
+            Debug.Log(transform.rotation);
             transform.rotation = Quaternion.Euler((Mathf.RoundToInt(transform.rotation.x)/90)*90, (Mathf.RoundToInt(transform.rotation.y)/90)*90, (Mathf.RoundToInt(transform.rotation.z)/90)*90);
+            Debug.Log(transform.rotation);
             //return new KeyValuePair<int, Transform>(0, null);
             return DetermineNumber();
         }
@@ -99,6 +106,12 @@ public class DiceThrow : MonoBehaviour
     public KeyValuePair<int, Transform> GetValue()
     {
         return currentValue;
+    }
+
+
+    void DestroyThis()
+    {
+        Destroy(gameObject);
     }
 }
     

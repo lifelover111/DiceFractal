@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -61,6 +62,11 @@ public class Ability : ScriptableObject
     public string GetStringCost() 
     {
         return cost.GetStringCost();
+    }
+
+    public bool CompareEffect(System.Action action)
+    {
+        return action.GetMethodInfo().Name == OnUse.GetPersistentMethodName(0);
     }
 }
 

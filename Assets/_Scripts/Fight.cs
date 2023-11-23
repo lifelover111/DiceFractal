@@ -10,11 +10,13 @@ public class Fight
     public List<KeyValuePair<int, Transform>> dices = new List<KeyValuePair<int, Transform>>();
     FightController fightController;
     int requiredDiceNum;
+    public event System.Action OnFightEnd = () => { };
 
     public Fight(Character[] characters, int enemiesNum = 0)
     {
         fightController = FightController.instance;
         this.characters = characters;
+        PlaceCharacters();
         if (enemiesNum == 0)
             enemies = new Enemy[Random.Range(1, 4)];
         else
@@ -24,10 +26,9 @@ public class Fight
             SpawnEnemy(i);
         }
         fightController.currentFight = this;
-        StartFight();
     }
 
-    void StartFight()
+    public void StartFight()
     {
         GameObject dice = Object.Instantiate(GameManager.instance.dicePrefab);
         dice.transform.position = GameManager.instance.dicesPosition;
@@ -66,6 +67,16 @@ public class Fight
         diceThrow.ThrowDice();
     }
 
+    void PlaceCharacters()
+    {
+        int i = 3;
+        foreach(var c in characters)
+        {
+            c.transform.position = new Vector3(-5 * i, 0, 0);
+            i--;
+        }
+    }
+
     void SpawnEnemy(int num)
     {
         GameObject go = Object.Instantiate(GameManager.instance.enemyPrafabs[Random.Range(0, GameManager.instance.enemyPrafabs.Length)]);
@@ -86,6 +97,14 @@ public class Fight
             }
         }
         enemies = newEnemies;
+        if (enemies.Length == 0)
+            EndFight();
+    }
+    void EndFight()
+    {
+        fightController.EndFight();
+        RemoveDices();
+        OnFightEnd?.Invoke();
     }
 
     public void StartTurn()
@@ -128,7 +147,7 @@ public class Fight
     }
 
 
-    void RemoveDices(KeyValuePair<int, Transform>? except = null)
+    public void RemoveDices(KeyValuePair<int, Transform>? except = null)
     {
         if(except != null)
         {
