@@ -12,7 +12,7 @@ public abstract class Person : MonoBehaviour, IHealth
 
     public bool isDead = false;
 
-    public float health { get; private set; }
+    public float health { get; protected set; }
     public float maxHealth { get; private set; }
 
     private void Awake()
@@ -32,7 +32,13 @@ public abstract class Person : MonoBehaviour, IHealth
     {
         health += heal;
         health = health > maxHealth ? maxHealth : health;
+        GameObject go = Instantiate(GameManager.instance.damageEffectPrefab);
+        DamageEffect damageEffect = go.GetComponent<DamageEffect>();
+        damageEffect.SetDamageEffect(-heal, transform.position);
+        go.transform.SetParent(GameManager.instance.canvasRectTransform);
     }
+
+
     public IEnumerator UseItem(int dice)
     {
         anim.SetBool("Item", true);
@@ -54,7 +60,10 @@ public abstract class Person : MonoBehaviour, IHealth
         }
         health -= damage;
         health = health < 0 ? 0 : health;
-
+        GameObject go = Instantiate(GameManager.instance.damageEffectPrefab);
+        DamageEffect damageEffect = go.GetComponent<DamageEffect>();
+        damageEffect.SetDamageEffect(damage, transform.position);
+        go.transform.SetParent(GameManager.instance.canvasRectTransform);
         if (health == 0)
         {
             anim.SetBool("Die", true);

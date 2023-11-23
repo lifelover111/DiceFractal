@@ -18,7 +18,7 @@ public class Character : Person
         OnAbilityUse += () => { FightController.instance.EndTurnAbility(ability.AbilityCost()); };
         abilityTurnButton.gameObject.GetComponentInChildren<TMP_Text>().text = "Cost: " + ability?.GetStringCost();
     }
-    
+
 
     public void UseAbility()
     {
@@ -63,6 +63,16 @@ public class Character : Person
     {
         base.Die();
         OnCharacterDied?.Invoke();
+    }
+    public void Resurrect()
+    {
+        if (!isDead)
+            return;
+        SetIdle();
+        isDead = false;
+        health = maxHealth;
+        anim.Play("Idle");
+        anim.speed = 1;
     }
 
     public void DieEvent()

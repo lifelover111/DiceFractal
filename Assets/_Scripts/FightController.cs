@@ -103,9 +103,15 @@ public class FightController : MonoBehaviour
 
     public void EndFight()
     {
+        StartCoroutine(EndFightCoroutine());
+    }
+
+    IEnumerator EndFightCoroutine()
+    {
         pointer.gameObject.SetActive(false);
         StopAllCoroutines();
-        foreach(var c in currentFight.characters)
+        yield return new WaitForSeconds(1f);
+        foreach (var c in currentFight.characters)
             c.StopAllCoroutines();
     }
 }

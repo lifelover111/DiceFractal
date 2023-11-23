@@ -3207,7 +3207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 1
+  m_UiScaleMode: 0
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
@@ -3814,10 +3814,15 @@ MonoBehaviour:
   dicePrefab: {fileID: 3154737121834982862, guid: 6874a0763728d0649b83942e11695dee, type: 3}
   enemyPrafabs:
   - {fileID: 3941857743809933676, guid: da450cddd17e8a646b29a7172adf36bc, type: 3}
+  - {fileID: 7464517152543549298, guid: 3f0433b78ee854a459e2a32c539f1d6d, type: 3}
+  - {fileID: 1552150392861694243, guid: 559dc8ec876d3eb4dadb41b1f954c949, type: 3}
+  - {fileID: 7898151367119493024, guid: 0cd36c4587082994b91b3a6065dec910, type: 3}
   dicesPosition: {x: 0, y: -1000, z: 0}
   blackScreen: {fileID: 1685301986}
   forest: {fileID: 345902048}
   loseScreen: {fileID: 1554805179}
+  canvasRectTransform: {fileID: 839508980}
+  damageEffectPrefab: {fileID: 5507564220659834657, guid: d0ddd76959831d44aa36b96f24e9ba01, type: 3}
   abilityEndTurnButtons:
   - {fileID: 831375059}
   - {fileID: 1445792067}

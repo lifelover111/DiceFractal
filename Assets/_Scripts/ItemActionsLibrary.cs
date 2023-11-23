@@ -35,7 +35,7 @@ public class ItemActionsLibrary : ScriptableObject
     {
         Enemy[] enemies = FightController.instance.currentFight.enemies.OrderBy(e => Random.value).ToArray();
         for (int i = 0; i < (enemies.Length > 2 ? 2 : enemies.Length); i++)
-            enemies[i].TakeDamage(2);
+            enemies[enemies.Length - 1 - i].TakeDamage(2);
     }
     public void SpellfullSkull()
     {
@@ -43,16 +43,42 @@ public class ItemActionsLibrary : ScriptableObject
         Character owner = FightController.instance.currentFight.characters.Where(c => c.usableItem.CompareEffect(SpellfullSkull)).FirstOrDefault();
         for (int i = 0; i < (enemies.Length > 2 ? 2 : enemies.Length); i++)
         { 
-            enemies[i].TakeDamage(1);
+            enemies[enemies.Length - 1 - i].TakeDamage(1);
             owner.Heal(1);
         }
     }
 
-    // Доп оружие
+    // Доп предметы
+    public void Cheese()
+    {
+        Character[] characters = FightController.instance.currentFight.characters.Where(c => c.isDead).ToArray();
+        if (characters.Length == 0)
+            return;
+        characters[Random.Range(0, characters.Length)].Resurrect();
+    }
 
     // Оружие противников
     public void SkeletonItem()
     {
         FightController.instance.currentFight.characters.Where(c => !c.isDead).OrderBy(c => Random.value).FirstOrDefault().TakeDamage(3);
+    }
+    public void ObserverItem()
+    {
+        Character[] characters = FightController.instance.currentFight.characters.Where(c => !c.isDead).OrderBy(c => Random.value).ToArray();
+        for (int i = 0; i < (characters.Length > 2 ? 2 : characters.Length); i++)
+            characters[characters.Length - 1 - i].TakeDamage(2);
+    }
+    public void GoblinItem()
+    {
+        FightController.instance.currentFight.characters.Where(c => !c.isDead).OrderBy(c => c.health).FirstOrDefault().TakeDamage(2);
+    }
+    public void MushroomItem()
+    {
+        FightController.instance.currentFight.characters.Where(c => !c.isDead).OrderByDescending(c => c.health).FirstOrDefault().TakeDamage(4);
+    }
+    public void BringerOfDeathItem()
+    {
+        foreach (var c in FightController.instance.currentFight.characters.Where(ch => !ch.isDead))
+            c?.TakeDamage(3);
     }
 }

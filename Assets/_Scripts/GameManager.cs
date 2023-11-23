@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject blackScreen;
     [SerializeField] Transform forest;
     [SerializeField] Transform loseScreen;
+    [SerializeField] public RectTransform canvasRectTransform;
+    [SerializeField] public GameObject damageEffectPrefab;
 
     [SerializeField] Transform[] abilityEndTurnButtons;
     Character[] characters = new Character[3];

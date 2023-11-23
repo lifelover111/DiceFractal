@@ -13,33 +13,13 @@ public class Item : ScriptableObject
     class Cost
     {
         [SerializeField] int[] suitableDices;
-        public bool CheckCost(int[] dices)
-        {
-            bool contains = false;
-            foreach (int d in suitableDices)
-            {
-                if (dices.Contains(d))
-                    contains = true;
-            }
-            return contains;
-        }
         public bool Contains(int val)
         {
             return suitableDices.Contains(val);
         }
-        public string GetStringCost()
-        {
-            return string.Join("/", suitableDices);
-        }
-
-        public int AbilityCost()
-        {
-            /// Тут же сломается, если у абилки несколько подходящих бросков
-            return suitableDices[0];
-        }
-
     }
 
+    [SerializeField] bool isDisposable = false;
     [SerializeField] Cost price;
     [SerializeField] UnityEvent action;
     public event System.Action OnUse = () => { };
@@ -52,6 +32,8 @@ public class Item : ScriptableObject
     {
         OnUse?.Invoke();
         action?.Invoke();
+        if(isDisposable)
+            FightController.instance.currentFight.characters.Where(c => c.usableItem == this).FirstOrDefault().usableItem = null;
     }
     public bool CompareEffect(System.Action a)
     {

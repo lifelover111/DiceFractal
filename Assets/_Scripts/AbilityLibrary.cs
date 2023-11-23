@@ -25,7 +25,7 @@ public class AbilityLibrary : ScriptableObject
 
     public void RogueAbility()
     {
-        FightController.instance.currentFight.characters.Where(c => c.ability.CompareEffect(RogueAbility)).FirstOrDefault().usableItem.Use(2);
+        FightController.instance.currentFight.characters.Where(c => c.ability.CompareEffect(RogueAbility)).FirstOrDefault().usableItem?.Use(2);
     }
     
     public void WarlockAbility()
@@ -34,7 +34,7 @@ public class AbilityLibrary : ScriptableObject
         int damage = owner.health > 5 ? 5 : Mathf.RoundToInt(owner.health) - 1;
         owner.TakeDamage(damage);
         foreach (var e in FightController.instance.currentFight.enemies)
-            e?.TakeDamage(damage);
+            e?.TakeDamage(5);
     }
 
     public void SamuraiAbility()

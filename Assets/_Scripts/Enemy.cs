@@ -32,6 +32,16 @@ public class Enemy : Person
         anim.SetBool("Die", false);
     }
 
+    public void Resurrect()
+    {
+        if (!isDead)
+            return;
+        isDead = false;
+        health = maxHealth;
+        SetIdle();
+        anim.Play("Idle");
+        anim.speed = 1;
+    }
 
     public void DieEvent()
     {
