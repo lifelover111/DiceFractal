@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -29,7 +30,12 @@ public class GameManager : MonoBehaviour
             {
                 foreach (Character c in charactersTest)
                 {
-                    c.abilityTurnButton.gameObject.SetActive(false);
+                    Image buttonImage = c.abilityTurnButton.GetComponent<Image>();
+                    Color imageColor = buttonImage.color;
+                    imageColor.a = 0.5f;
+                    buttonImage.color = imageColor;
+                    //c.abilityTurnButton.gameObject.SetActive(false);
+
                 }
             };
         }

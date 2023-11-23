@@ -44,6 +44,9 @@ public class Ability : ScriptableObject
     [SerializeField] UnityEvent OnUse;
     [SerializeField] Cost cost;
 
+    [TextArea(3, 10)]
+    [SerializeField] string description;
+
     public void Use()
     {
         OnUse?.Invoke();
@@ -64,6 +67,12 @@ public class Ability : ScriptableObject
     public string GetStringCost() 
     {
         return cost.GetStringCost();
+    }
+
+
+    public string GetDescription()
+    {
+        return description;
     }
 }
 

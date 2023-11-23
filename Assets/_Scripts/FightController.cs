@@ -25,15 +25,18 @@ public class FightController : MonoBehaviour
     public void EndTurn()
     {
         currentFight.EndTurn();
-        endTurnButton.gameObject.SetActive(false);
+        //endTurnButton.gameObject.SetActive(false);
+        SetButtonVisibility(endTurnButton, false);
         foreach (var c in currentFight.characters)
-            c.abilityTurnButton.gameObject.SetActive(false);
+            SetButtonVisibility(c.abilityTurnButton, false);
+        //c.abilityTurnButton.gameObject.SetActive(false);
     }
 
     public void EndTurnAbility(int dice)
     {
         currentFight.EndTurn(dice);
-        endTurnButton.gameObject.SetActive(false);
+        //endTurnButton.gameObject.SetActive(false);
+        SetButtonVisibility(endTurnButton, false);
     }
 
     IEnumerator TurnCoroutine()
@@ -49,12 +52,14 @@ public class FightController : MonoBehaviour
                 yield return character.StartCoroutine(PlayerTurnCoroutine(character, dice.Key));
             }
         }
-        endTurnButton.gameObject.SetActive(true);
-        foreach(var c in currentFight.characters)
+        //endTurnButton.gameObject.SetActive(true);
+        SetButtonVisibility(endTurnButton, true);
+        foreach (var c in currentFight.characters)
         {
             if(c.ability.CheckCost(currentFight.dices.Select(d => d.Key).ToArray()))
             {
-                c.abilityTurnButton.gameObject.SetActive(true);
+                //c.abilityTurnButton.gameObject.SetActive(true);
+                SetButtonVisibility(c.abilityTurnButton, true);
             }
         }
     }
@@ -74,6 +79,19 @@ public class FightController : MonoBehaviour
         {
             character.usableItem.Use(dice);
             yield return new WaitForSeconds(2f);
+        }
+    }
+
+
+    void SetButtonVisibility(Transform buttonTransform, bool visible)
+    {
+        Image buttonImage = buttonTransform.GetComponent<Image>();
+
+        if (buttonImage != null)
+        {
+            Color imageColor = buttonImage.color;
+            imageColor.a = visible ? 1f : 0.5f; 
+            buttonImage.color = imageColor;
         }
     }
 }
