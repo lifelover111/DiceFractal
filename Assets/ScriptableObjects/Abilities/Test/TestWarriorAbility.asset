@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e6ba6166e30f224e90323899cd6da56, type: 3}
   m_Name: TestWarriorAbility
   m_EditorClassIdentifier: 
+  abilityIcon: {fileID: 21300000, guid: 6aa2c084e23bc8e469b947725adac0fd, type: 3}
   OnUse:
     m_PersistentCalls:
       m_Calls:
@@ -29,3 +30,7 @@ MonoBehaviour:
         m_CallState: 2
   cost:
     suitableDices: 06000000
+  description: "\"\u041D\u0435\u0443\u0434\u0435\u0440\u0436\u0438\u043C\u0430\u044F
+    \u0430\u0442\u0430\u043A\u0430: \u0432\u043E\u0438\u043D, \u0432\u0438\u0434\u044F
+    \u043D\u0430 \u043A\u0443\u0431\u0438\u043A\u0435 \u0448\u0435\u0441\u0442\u0435\u0440\u043A\u0443,
+    \u0431\u0440\u043E\u0441\u0430\u0435\u0442\u0441\u044F \u0432 \u0430\u0442\u0430\u043A\u0443.\""

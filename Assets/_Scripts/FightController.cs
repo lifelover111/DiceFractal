@@ -26,15 +26,18 @@ public class FightController : MonoBehaviour
     public void EndTurn()
     {
         currentFight.EndTurn();
-        endTurnButton.gameObject.SetActive(false);
+        //endTurnButton.gameObject.SetActive(false);
+        SetButtonVisibility(endTurnButton, false);
         foreach (var c in currentFight.characters)
-            c.abilityTurnButton.gameObject.SetActive(false);
+            SetButtonVisibility(c.abilityTurnButton, false);
+        //c.abilityTurnButton.gameObject.SetActive(false);
     }
 
     public void EndTurnAbility(int dice)
     {
         currentFight.EndTurn(dice);
-        endTurnButton.gameObject.SetActive(false);
+        //endTurnButton.gameObject.SetActive(false);
+        SetButtonVisibility(endTurnButton, false);
     }
 
     IEnumerator TurnCoroutine()
@@ -56,20 +59,24 @@ public class FightController : MonoBehaviour
                 }
                 diceMat.color = Color.white;
             }
-            endTurnButton.gameObject.SetActive(true);
+            //endTurnButton.gameObject.SetActive(true);
+            SetButtonVisibility(endTurnButton, true);
             foreach (var c in currentFight.characters)
             {
-                if (!c.isDead && c.ability.CheckCost(currentFight.dices.Select(d => d.Key).ToArray()))
+                if (c.ability.CheckCost(currentFight.dices.Select(d => d.Key).ToArray()))
                 {
-                    c.abilityTurnButton.gameObject.SetActive(true);
+                    //c.abilityTurnButton.gameObject.SetActive(true);
+                    SetButtonVisibility(c.abilityTurnButton, true);
                 }
             }
         }
+
         else
-        { 
+        {
             currentFight.RemoveDices();
         }
     }
+
 
     IEnumerator EnemyTurnCoroutine(Enemy enemy, int dice)
     {
@@ -120,5 +127,18 @@ public class FightController : MonoBehaviour
         Debug.Log("Item Dropped!");
         yield return null;
         action.Invoke();
+    }
+
+
+    void SetButtonVisibility(Transform buttonTransform, bool visible)
+    {
+        Image buttonImage = buttonTransform.GetComponent<Image>();
+
+        if (buttonImage != null)
+        {
+            Color imageColor = buttonImage.color;
+            imageColor.a = visible ? 1f : 0.5f; 
+            buttonImage.color = imageColor;
+        }
     }
 }

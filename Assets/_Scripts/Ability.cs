@@ -8,6 +8,9 @@ using UnityEngine.Events;
 [CreateAssetMenu(menuName = "Ability", fileName = "new Ability")]
 public class Ability : ScriptableObject
 {
+
+    public Sprite abilityIcon;
+
     [System.Serializable]
     class Cost
     {
@@ -42,6 +45,9 @@ public class Ability : ScriptableObject
     [SerializeField] UnityEvent OnUse;
     [SerializeField] Cost cost;
 
+    [TextArea(3, 10)]
+    [SerializeField] string description;
+
     public void Use()
     {
         OnUse?.Invoke();
@@ -67,6 +73,11 @@ public class Ability : ScriptableObject
     public bool CompareEffect(System.Action action)
     {
         return action.GetMethodInfo().Name == OnUse.GetPersistentMethodName(0);
+    }
+
+    public string GetDescription()
+    {
+        return description;
     }
 }
 

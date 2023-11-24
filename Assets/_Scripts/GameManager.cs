@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -71,7 +72,12 @@ public class GameManager : MonoBehaviour
             {
                 foreach (Character c in characters)
                 {
-                    c.abilityTurnButton.gameObject.SetActive(false);
+                    Image buttonImage = c.abilityTurnButton.GetComponent<Image>();
+                    Color imageColor = buttonImage.color;
+                    imageColor.a = 0.5f;
+                    buttonImage.color = imageColor;
+                    //c.abilityTurnButton.gameObject.SetActive(false);
+
                 }
             };
         }
