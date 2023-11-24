@@ -16,9 +16,7 @@ public class ItemActionsLibrary : ScriptableObject
 
     public void PrayerBook()
     {
-        foreach (var c in FightController.instance.currentFight.characters)
-            if(!c.isDead)
-                c.Heal(1);
+        FightController.instance.currentFight.characters.Where(c => !c.isDead).OrderBy(c => c.health).FirstOrDefault().Heal(1);
     }
     public void FireStaff()
     {
@@ -57,28 +55,48 @@ public class ItemActionsLibrary : ScriptableObject
         characters[Random.Range(0, characters.Length)].Resurrect();
     }
 
+    public void Apple()
+    {
+        foreach(var c in FightController.instance.currentFight.characters.Where(x => !x.isDead))
+        {
+            c.Heal(Mathf.RoundToInt(c.maxHealth / 2));
+        }
+    }
+
     // Оружие противников
     public void SkeletonItem()
     {
-        FightController.instance.currentFight.characters.Where(c => !c.isDead).OrderBy(c => Random.value).FirstOrDefault().TakeDamage(3);
+        FightController.instance.currentFight.characters.Where(c => !c.isDead).OrderBy(c => Random.value).FirstOrDefault().TakeDamage(2);
     }
     public void ObserverItem()
     {
         Character[] characters = FightController.instance.currentFight.characters.Where(c => !c.isDead).OrderBy(c => Random.value).ToArray();
         for (int i = 0; i < (characters.Length > 2 ? 2 : characters.Length); i++)
-            characters[characters.Length - 1 - i].TakeDamage(2);
+            characters[characters.Length - 1 - i].TakeDamage(1);
     }
     public void GoblinItem()
     {
-        FightController.instance.currentFight.characters.Where(c => !c.isDead).OrderBy(c => c.health).FirstOrDefault().TakeDamage(2);
+        FightController.instance.currentFight.characters.Where(c => !c.isDead).OrderBy(c => c.health).FirstOrDefault().TakeDamage(1);
     }
     public void MushroomItem()
     {
-        FightController.instance.currentFight.characters.Where(c => !c.isDead).OrderByDescending(c => c.health).FirstOrDefault().TakeDamage(4);
+        FightController.instance.currentFight.characters.Where(c => !c.isDead).OrderByDescending(c => c.health).FirstOrDefault().TakeDamage(5);
     }
     public void BringerOfDeathItem()
     {
         foreach (var c in FightController.instance.currentFight.characters.Where(ch => !ch.isDead))
             c?.TakeDamage(3);
+    }
+    public void PikemanItem()
+    {
+        Character[] characters = FightController.instance.currentFight.characters.Where(c => !c.isDead).ToArray();
+        if(characters.Length >= 2)
+        {
+            int target = Random.Range(1, characters.Length);
+            characters[target].TakeDamage(4);
+            characters[target-1].TakeDamage(2);
+        }
+        else
+            characters[0].TakeDamage(4);
     }
 }

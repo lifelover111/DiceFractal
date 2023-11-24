@@ -12,19 +12,12 @@ public class Fight
     int requiredDiceNum;
     public event System.Action OnFightEnd = () => { };
 
-    public Fight(Character[] characters, int enemiesNum = 0)
+    public Fight(Character[] characters, DifficultyProgression progression)
     {
         fightController = FightController.instance;
         this.characters = characters;
         PlaceCharacters();
-        if (enemiesNum == 0)
-            enemies = new Enemy[Random.Range(1, 4)];
-        else
-            enemies = new Enemy[enemiesNum];
-        for(int i = 0; i < enemies.Length; i++)
-        {
-            SpawnEnemy(i);
-        }
+        enemies = progression.GetEnemies();
         fightController.currentFight = this;
     }
 
@@ -77,12 +70,6 @@ public class Fight
         }
     }
 
-    void SpawnEnemy(int num)
-    {
-        GameObject go = Object.Instantiate(GameManager.instance.enemyPrafabs[Random.Range(0, GameManager.instance.enemyPrafabs.Length)]);
-        enemies[num] = go.GetComponent<Enemy>();
-        go.transform.position = new Vector3(5*(num + 1),0,0);
-    }
 
     public void RemoveEnemy(Enemy enemy)
     {
@@ -104,7 +91,9 @@ public class Fight
     {
         fightController.EndFight();
         RemoveDices();
-        OnFightEnd?.Invoke();
+
+
+        fightController.StartCoroutine(fightController.DropItemsThenGoForward(OnFightEnd.Invoke));
     }
 
     public void StartTurn()

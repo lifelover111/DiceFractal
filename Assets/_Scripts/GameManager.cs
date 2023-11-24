@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public GameObject dicePrefab;
-    public GameObject[] enemyPrafabs;
     public Vector3 dicesPosition = new Vector3(0, -1000, 0);
     [SerializeField] GameObject blackScreen;
     [SerializeField] Transform forest;
@@ -24,6 +23,9 @@ public class GameManager : MonoBehaviour
     public int damageDealed = 0;
     public int damageTaken = 0;
     public int healthRestored = 0;
+
+
+    DifficultyProgression progression;
 
     private void Awake()
     {
@@ -41,7 +43,9 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-        Fight fight = new Fight(characters);
+        progression = new DifficultyProgression();
+        Fight fight = new Fight(characters, progression);
+        fight.OnFightEnd += progression.IncrementFightNumber;
         fight.OnFightEnd += () => { battlesWon++; };
         fight.OnFightEnd += NewFight;
         fight.StartFight();
@@ -91,11 +95,11 @@ public class GameManager : MonoBehaviour
             Color col = sRend.color;
             col.a = Mathf.Lerp(0, 1, p);
             sRend.color = col;
-            p += 0.0015f;
+            p += Time.deltaTime/2;
             foreach (var c in characters)
             {
                 if(!c.isDead)
-                    c.gameObject.transform.position += 0.015f * Vector3.right;
+                    c.gameObject.transform.position += 5*Time.deltaTime * Vector3.right;
             }
             yield return null;
         }
@@ -105,8 +109,9 @@ public class GameManager : MonoBehaviour
         }
         DiceThrow.DestroyAllDicesDelegate.Invoke();
         forest.position = new Vector3(Random.Range(-42, 2), 3.2f, 0);
-        Fight fight = new Fight(characters);
+        Fight fight = new Fight(characters, progression);
 
+        fight.OnFightEnd += progression.IncrementFightNumber;
         fight.OnFightEnd += () => { battlesWon++; };
         fight.OnFightEnd += NewFight;
 
@@ -116,7 +121,7 @@ public class GameManager : MonoBehaviour
             Color col = sRend.color;
             col.a = Mathf.Lerp(1, 0, p);
             sRend.color = col;
-            p += 0.0015f;
+            p += Time.deltaTime/2;
             yield return null;
         }
         blackScreen.gameObject.SetActive(false);

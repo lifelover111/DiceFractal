@@ -120,7 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68a916ae55556534aa268e14d0cb4ef8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalHealth: 20
+  totalHealth: 24
   usableItem: {fileID: 11400000, guid: 9dc46cec29c8adf44aa94c18b52a0a2e, type: 2}
   isDead: 0
   ability: {fileID: 11400000, guid: 53a9a9a406e983c47ac715266326570b, type: 2}

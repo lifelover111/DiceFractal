@@ -114,4 +114,11 @@ public class FightController : MonoBehaviour
         foreach (var c in currentFight.characters)
             c.StopAllCoroutines();
     }
+
+    public IEnumerator DropItemsThenGoForward(System.Action action)
+    {
+        Debug.Log("Item Dropped!");
+        yield return null;
+        action.Invoke();
+    }
 }

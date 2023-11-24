@@ -33,9 +33,6 @@ public class DamageEffect : MonoBehaviour
             text.color = Color.green;
             text.text = '+' + (-value).ToString();
         }
-        Vector2 canvasPos;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRectTransform, Camera.main.WorldToScreenPoint(pos + 0.5f * Vector3.right + 2f * Vector3.up), null, out canvasPos);
-        canvasPos += (Vector2)canvasRectTransform.transform.position;
-        transform.position = canvasPos;
+        transform.position = Camera.main.WorldToScreenPoint(pos + 0.8f* Vector3.right + 2*Vector3.up);
     }
 }

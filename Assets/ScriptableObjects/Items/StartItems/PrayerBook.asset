@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c503eeb849139ac4eab39b715ebf4662, type: 3}
   m_Name: PrayerBook
   m_EditorClassIdentifier: 
+  isDisposable: 0
   price:
-    suitableDices: 02000000
+    suitableDices: 0100000002000000
   action:
     m_PersistentCalls:
       m_Calls:

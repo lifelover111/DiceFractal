@@ -15,12 +15,14 @@ public class AbilityLibrary : ScriptableObject
 
     public void MageAbility()
     {
-        FightController.instance.currentFight.enemies.OrderBy(c => c.health).FirstOrDefault()?.TakeDamage(7);
+        FightController.instance.currentFight.enemies[Random.Range(0, FightController.instance.currentFight.enemies.Length)].TakeDamage(7);
     }
 
     public void PriestAbility()
     {
-        FightController.instance.currentFight.characters.Where(c => !c.isDead).OrderBy(c => c.health).FirstOrDefault().Heal(8);
+        foreach (var c in FightController.instance.currentFight.characters)
+            if (!c.isDead)
+                c.Heal(2);
     }
 
     public void RogueAbility()
@@ -34,12 +36,12 @@ public class AbilityLibrary : ScriptableObject
         int damage = owner.health > 5 ? 5 : Mathf.RoundToInt(owner.health) - 1;
         owner.TakeDamage(damage);
         foreach (var e in FightController.instance.currentFight.enemies)
-            e?.TakeDamage(5);
+            e?.TakeDamage(damage);
     }
 
     public void SamuraiAbility()
     {
-        FightController.instance.currentFight.enemies.OrderByDescending(c => c.health).FirstOrDefault()?.TakeDamage(9);
+        FightController.instance.currentFight.enemies.OrderByDescending(c => c.health).FirstOrDefault()?.TakeDamage(8);
     }
 
     public void DebugAbility()
