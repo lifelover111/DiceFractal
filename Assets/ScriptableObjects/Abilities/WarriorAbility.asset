@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e6ba6166e30f224e90323899cd6da56, type: 3}
   m_Name: WarriorAbility
   m_EditorClassIdentifier: 
+  abilityIcon: {fileID: 21300000, guid: c0ea4b6e528e7fe4aa6cdc94d38691a1, type: 3}
   OnUse:
     m_PersistentCalls:
       m_Calls:
@@ -29,3 +30,4 @@ MonoBehaviour:
         m_CallState: 2
   cost:
     suitableDices: 06000000
+  description: Testqweeeeeeeeeeee

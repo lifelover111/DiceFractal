@@ -57,9 +57,11 @@ public class GameManager : MonoBehaviour
         GameObject party = new GameObject("Party");
         for(int i = 0; i < characters.Length; i++) 
         {
-            characters[2 - i] = Instantiate(PartyKeeper.instance.GetParty()[i].GetComponent<Character>());
+            characters[2 - i] = Instantiate(PartyKeeper.instance.GetParty()[i]).GetComponent<Character>();
             characters[2 - i].abilityTurnButton = abilityEndTurnButtons[2 - i];
             characters[2 - i].transform.SetParent(party.transform, true);
+
+            characters[2 - i].abilityTurnButton.GetComponent<Button>().interactable = false;
         }
         PartyKeeper.instance.Destroy();
     }
@@ -72,12 +74,7 @@ public class GameManager : MonoBehaviour
             {
                 foreach (Character c in characters)
                 {
-                    Image buttonImage = c.abilityTurnButton.GetComponent<Image>();
-                    Color imageColor = buttonImage.color;
-                    imageColor.a = 0.5f;
-                    buttonImage.color = imageColor;
-                    //c.abilityTurnButton.gameObject.SetActive(false);
-
+                    c.abilityTurnButton.GetComponent<Button>().interactable = false;  //.gameObject.SetActive(false);
                 }
             };
         }

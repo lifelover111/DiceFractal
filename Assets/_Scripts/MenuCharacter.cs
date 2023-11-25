@@ -27,6 +27,7 @@ public class MenuCharacter : MonoBehaviour
 
     private void OnMouseDown()
     {
+        GameInfo.instance.gameObject.SetActive(false);
         if (PartyKeeper.instance.GetParty().Count >= 3 && !chosen)
             return;
         if (!chosen)
@@ -36,6 +37,10 @@ public class MenuCharacter : MonoBehaviour
     }
     private void OnMouseEnter()
     {
+        GameInfo.instance.gameObject.SetActive(true);
+        Vector2 infoPosition = transform.position.x < 0 ? Camera.main.WorldToScreenPoint(transform.position) + 350 * Vector3.right : Camera.main.WorldToScreenPoint(transform.position) - 350 * Vector3.right;
+        GameInfo.instance.SetInfo(infoPosition);
+
         if (chosen)
             return;
         mouseOn = true;
@@ -45,6 +50,9 @@ public class MenuCharacter : MonoBehaviour
     }
     private void OnMouseExit()
     {
+        //if(GameInfo.instance.gameObject.activeInHierarchy)
+        //    GameInfo.instance.StartCoroutine(GameInfo.instance.Close());
+        GameInfo.instance.gameObject.SetActive(false);
         mouseOn = false;
         Color color = glowSpriteRend.color;
         color.a = 0.5f;
