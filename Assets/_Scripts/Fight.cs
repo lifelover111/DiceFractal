@@ -12,8 +12,11 @@ public class Fight
     int requiredDiceNum;
     public event System.Action OnFightEnd = () => { };
 
+    DifficultyProgression progression;
+
     public Fight(Character[] characters, DifficultyProgression progression)
     {
+        this.progression = progression;
         fightController = FightController.instance;
         this.characters = characters;
         PlaceCharacters();
@@ -91,9 +94,17 @@ public class Fight
     {
         fightController.EndFight();
         RemoveDices();
-
-
-        fightController.StartCoroutine(fightController.DropItemsThenGoForward(OnFightEnd.Invoke));
+        Item[] itemsDropped = progression.GetItemsDrop();
+        if (itemsDropped.Length > 0)
+        {
+            foreach (var item in itemsDropped)
+            {
+                Inventory.instance.AddItem(item);
+            }
+            fightController.StartCoroutine(fightController.DropItemsThenGoForward(OnFightEnd.Invoke));
+        }
+        else
+            OnFightEnd?.Invoke();
     }
 
     public void StartTurn()

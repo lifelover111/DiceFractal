@@ -15,9 +15,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] Transform loseScreen;
     [SerializeField] public RectTransform canvasRectTransform;
     [SerializeField] public GameObject damageEffectPrefab;
+    [SerializeField] public GameObject inventoryItemPrefab;
 
     [SerializeField] Transform[] abilityEndTurnButtons;
+    [SerializeField] Transform[] equippedItemSlots;
     Character[] characters = new Character[3];
+
+    [SerializeField] Item[] additionalStartItems;
 
     public int battlesWon = 0;
     public int enemiesKilled = 0;
@@ -44,6 +48,10 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
+        foreach (Item item in additionalStartItems)
+        {
+            Inventory.instance.AddItem(item.Copy());
+        }
         progression = new DifficultyProgression();
         Fight fight = new Fight(characters, progression);
         fight.OnFightEnd += progression.IncrementFightNumber;
@@ -62,6 +70,8 @@ public class GameManager : MonoBehaviour
             characters[2 - i].transform.SetParent(party.transform, true);
 
             characters[2 - i].abilityTurnButton.GetComponent<Button>().interactable = false;
+
+            characters[2 - i].equippedItemSlot = equippedItemSlots[2 - i];
         }
         PartyKeeper.instance.Destroy();
     }

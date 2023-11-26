@@ -1,21 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 public class ItemSlot : MonoBehaviour, IDropHandler
 {
+    [SerializeField] bool isActiveSlot = false;
+    public event System.Action OnSlotDrop = delegate { };
+    public event System.Action OnSlotEmpty = delegate { };
     public void OnDrop(PointerEventData eventData)
     {
-        Debug.Log("OnDrop");
         if (eventData.pointerDrag != null)
         {
-            //eventData.pointerDrag.GetComponent<RectTransform>().anchoredPosition = GetComponent<RectTransform>().anchoredPosition;
-            RectTransform draggedRectTransform = eventData.pointerDrag.GetComponent<RectTransform>();
-            RectTransform slotRectTransform = GetComponent<RectTransform>();
-
-            //// Устанавливаем позицию draggedRectTransform относительно slotRectTransform
-            draggedRectTransform.position = slotRectTransform.position;
+            StartCoroutine(ItemDroppedCoroutine());
         }
     }
-
+    private void FixedUpdate()
+    {
+        if(isActiveSlot && transform.childCount == 0)
+        {
+            OnSlotEmpty?.Invoke();
+        }
+    }
+    IEnumerator ItemDroppedCoroutine()
+    {
+        yield return new WaitWhile(() => { return transform.childCount == 0; });
+        OnSlotDrop?.Invoke();
+    }
 }

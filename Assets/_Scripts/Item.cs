@@ -22,7 +22,9 @@ public class Item : ScriptableObject
     [SerializeField] bool isDisposable = false;
     [SerializeField] Cost price;
     [SerializeField] UnityEvent action;
+    public Sprite icon;
     public event System.Action OnUse = () => { };
+    [SerializeField] string description;
 
     public bool CheckPrice(int value)
     {
@@ -38,5 +40,22 @@ public class Item : ScriptableObject
     public bool CompareEffect(System.Action a)
     {
         return a.GetMethodInfo().Name == action.GetPersistentMethodName(0);
+    }
+
+    public bool IsDisposable()
+    {
+        return isDisposable;
+    }
+
+    public string GetDescription()
+    {
+        return description;
+    }
+
+    public Item Copy()
+    {
+        Item item = Instantiate(this);
+        item.name = this.name;
+        return item;
     }
 }

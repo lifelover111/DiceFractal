@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c503eeb849139ac4eab39b715ebf4662, type: 3}
   m_Name: OldKatana
   m_EditorClassIdentifier: 
+  isDisposable: 0
   price:
     suitableDices: 04000000
   action:
@@ -29,3 +30,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  icon: {fileID: 21300000, guid: f2a6caf7b6afd7b4095cfac985b5869c, type: 3}
+  description: "[4]: \u041D\u0430\u043D\u043E\u0441\u0438\u0442 \u043F\u043E 2 \u0435\u0434.
+    \u0443\u0440\u043E\u043D\u0430 \u0434\u0432\u0443\u043C \u0441\u043B\u0443\u0447\u0430\u0439\u043D\u044B\u043C
+    \u043F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A\u0430\u043C."

@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Enemy : Person
 {
+    [SerializeField] string name;
     private void Start()
     {
         FightController.instance.currentFight.OnFightEnd += () => { Destroy(gameObject); };
@@ -47,5 +49,16 @@ public class Enemy : Person
     {
         anim.speed = 0;
         StopAllCoroutines();
+    }
+
+    private void OnMouseEnter()
+    {
+        GameInfo.instance.gameObject.SetActive(true);
+        Vector2 infoPosition = Camera.main.WorldToScreenPoint(transform.position) - 650 * (Screen.width / 1920) * Vector3.right;
+        GameInfo.instance.SetInfo(infoPosition, name, usableItem.GetDescription());
+    }
+    private void OnMouseExit()
+    {
+        GameInfo.instance.gameObject.SetActive(false);
     }
 }

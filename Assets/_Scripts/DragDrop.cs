@@ -3,56 +3,80 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     [SerializeField] private Canvas canvas;
     public RectTransform rectTransform;
     private CanvasGroup canvasGroup;
-    private Transform originalParent;
+    [SerializeField]private RectTransform originalParent;
     public void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
-        originalParent = transform.parent;
+    }
+
+    private void Start()
+    {
+        originalParent = transform.parent.GetComponent<RectTransform>();
+        canvas = transform.root.GetComponent<Canvas>();
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        Debug.Log("OnDrag");
+        if (!FightController.instance.playerTurn)
+            return;
+        //Debug.Log("OnDrag");
         rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+        GameInfo.instance.gameObject.SetActive(false);
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        Debug.Log("OnBeginDrag");
+        if (!FightController.instance.playerTurn)
+            return;
+        //Debug.Log("OnBeginDrag");
         canvasGroup.alpha = .6f;
         canvasGroup.blocksRaycasts = false;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        Debug.Log("OnEndDrag");
+        if (!FightController.instance.playerTurn)
+            return;
+        //Debug.Log("OnEndDrag");
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
-        if (eventData.pointerEnter != null && eventData.pointerEnter.GetComponent<ItemSlot>() != null)
+        if (eventData.pointerEnter != null && eventData.pointerEnter.CompareTag("Slot"))
         {
+            if (eventData.pointerEnter.transform.childCount > 0)
+            {
+                Transform anotherItem = eventData.pointerEnter.transform.GetChild(0);
+                anotherItem.GetComponent<DragDrop>().SetParent(originalParent);
+            }
+            SetParent(eventData.pointerEnter.GetComponent<RectTransform>());
 
-            originalParent = eventData.pointerEnter.transform;
-            transform.SetParent(eventData.pointerEnter.transform);
-            rectTransform.anchoredPosition = Vector2.zero;
+        }
+        else if(eventData.pointerEnter != null && eventData.pointerEnter.CompareTag("Item"))
+        {
+            RectTransform parent = eventData.pointerEnter.transform.parent.GetComponent<RectTransform>();
+            RectTransform anotherItem = eventData.pointerEnter.GetComponent<RectTransform>();
+            anotherItem.GetComponent<DragDrop>().SetParent(originalParent);
+
+            SetParent(parent);
         }
         else
         {
-
             transform.SetParent(originalParent);
             rectTransform.anchoredPosition = Vector2.zero;
         }
     }
 
+    public void SetParent(RectTransform parent)
+    {
+        transform.SetParent(parent);
+        originalParent = parent; 
+        rectTransform.anchoredPosition3D = Vector3.zero;
+    }
     
 
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        Debug.Log("OnPointerDown");
-    }
 }

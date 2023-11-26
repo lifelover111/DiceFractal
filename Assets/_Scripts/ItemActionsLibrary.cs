@@ -38,7 +38,7 @@ public class ItemActionsLibrary : ScriptableObject
     public void SpellfullSkull()
     {
         Enemy[] enemies = FightController.instance.currentFight.enemies.OrderBy(e => Random.value).ToArray();
-        Character owner = FightController.instance.currentFight.characters.Where(c => c.usableItem.CompareEffect(SpellfullSkull)).FirstOrDefault();
+        Character owner = FightController.instance.currentFight.characters.Where(c => c.usableItem?.CompareEffect(SpellfullSkull) ?? false).FirstOrDefault();
         for (int i = 0; i < (enemies.Length > 2 ? 2 : enemies.Length); i++)
         { 
             enemies[enemies.Length - 1 - i].TakeDamage(1);
@@ -52,7 +52,8 @@ public class ItemActionsLibrary : ScriptableObject
         Character[] characters = FightController.instance.currentFight.characters.Where(c => c.isDead).ToArray();
         if (characters.Length == 0)
             return;
-        characters[Random.Range(0, characters.Length)].Resurrect();
+        foreach(var c in characters)
+            c.Resurrect();
     }
 
     public void Apple()
@@ -61,6 +62,20 @@ public class ItemActionsLibrary : ScriptableObject
         {
             c.Heal(Mathf.RoundToInt(c.maxHealth / 2));
         }
+    }
+
+    public void HealingPotion()
+    {
+        Character character = FightController.instance.currentFight.characters.Where(c => !c.isDead).OrderBy(c => c.health).FirstOrDefault();
+        character.Heal(Mathf.RoundToInt(character.maxHealth/2));
+    }
+
+
+    public void LongSword()
+    {
+        if (FightController.instance.currentFight.enemies.Length < 1)
+            return;
+        FightController.instance.currentFight.enemies[Random.Range(0, FightController.instance.currentFight.enemies.Length)]?.TakeDamage(5);
     }
 
     // Оружие противников
@@ -72,7 +87,7 @@ public class ItemActionsLibrary : ScriptableObject
     {
         Character[] characters = FightController.instance.currentFight.characters.Where(c => !c.isDead).OrderBy(c => Random.value).ToArray();
         for (int i = 0; i < (characters.Length > 2 ? 2 : characters.Length); i++)
-            characters[characters.Length - 1 - i].TakeDamage(1);
+            characters[characters.Length - 1 - i].TakeDamage(2);
     }
     public void GoblinItem()
     {

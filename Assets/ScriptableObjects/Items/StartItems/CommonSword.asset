@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c503eeb849139ac4eab39b715ebf4662, type: 3}
   m_Name: CommonSword
   m_EditorClassIdentifier: 
+  isDisposable: 0
   price:
     suitableDices: 0300000004000000
   action:
@@ -29,3 +30,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  icon: {fileID: 21300000, guid: 789e518168d493d4396ec984b1b5bcb3, type: 3}
+  description: "[4]/[3]: \u041D\u0430\u043D\u043E\u0441\u0438\u0442 3 \u0435\u0434.
+    \u0443\u0440\u043E\u043D\u0430 \u0441\u043B\u0443\u0447\u0430\u0439\u043D\u043E\u043C\u0443
+    \u043F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A\u0443."

@@ -11,10 +11,14 @@ public class FightController : MonoBehaviour
     public Fight currentFight;
     [SerializeField] Transform endTurnButton;
     [SerializeField] Transform pointer;
+    [SerializeField] Transform itemDropWindow;
+    public bool playerTurn { get; set; }
+    bool itemsTaken = false;
 
     private void Awake()
     {
         instance = this;
+        playerTurn = false;
     }
 
 
@@ -25,10 +29,11 @@ public class FightController : MonoBehaviour
 
     public void EndTurn()
     {
+        playerTurn = false;
         currentFight.EndTurn();
         endTurnButton.gameObject.SetActive(false);
         foreach (var c in currentFight.characters)
-            c.abilityTurnButton.GetComponent<Button>().interactable = false; //.gameObject.SetActive(false);
+            c.abilityTurnButton.GetComponent<Button>().interactable = false; 
     }
 
     public void EndTurnAbility(int dice)
@@ -39,6 +44,7 @@ public class FightController : MonoBehaviour
 
     IEnumerator TurnCoroutine()
     {
+        playerTurn = false;
         if (currentFight.enemies.Length > 0)
         {
             foreach (var dice in currentFight.dices.OrderByDescending(dice => dice.Key))
@@ -57,11 +63,11 @@ public class FightController : MonoBehaviour
                 diceMat.color = Color.white;
             }
             endTurnButton.gameObject.SetActive(true);
-            foreach (var c in currentFight.characters)
+            foreach (var c in currentFight.characters.Where(x => !x.isDead))
             {
                 if (c.ability.CheckCost(currentFight.dices.Select(d => d.Key).ToArray()))
                 {
-                    c.abilityTurnButton.GetComponent<Button>().interactable = true;  //.gameObject.SetActive(true);
+                    c.abilityTurnButton.GetComponent<Button>().interactable = true; 
                 }
             }
         }
@@ -70,6 +76,7 @@ public class FightController : MonoBehaviour
         {
             currentFight.RemoveDices();
         }
+        playerTurn = true;
     }
 
 
@@ -119,10 +126,18 @@ public class FightController : MonoBehaviour
 
     public IEnumerator DropItemsThenGoForward(System.Action action)
     {
-        Debug.Log("Item Dropped!");
-        yield return null;
+        playerTurn = true;
+        itemDropWindow.gameObject.SetActive(true);
+        yield return new WaitWhile(() => { return itemsTaken == false; });
+        itemsTaken = false;
         action.Invoke();
     }
 
+    public void TakeItems()
+    {
+        itemsTaken = true;
+        itemDropWindow.gameObject.SetActive(false);
+        playerTurn = false;
+    }
 
 }

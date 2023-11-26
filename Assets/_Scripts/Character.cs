@@ -9,6 +9,7 @@ public class Character : Person
 {
     public Ability ability;
     public Transform abilityTurnButton;
+    public Transform equippedItemSlot;
     public event System.Action OnAbilityUse = () => { };
     public event System.Action OnCharacterDied = () => { };
 
@@ -19,10 +20,22 @@ public class Character : Person
         OnAbilityUse += () => { FightController.instance.EndTurnAbility(ability.AbilityCost()); };
 
         abilityTurnButton.gameObject.GetComponent<AbilityButton>().SetAbility(ability);
+
+        GameObject itemInventory = Instantiate(GameManager.instance.inventoryItemPrefab);
+        itemInventory.transform.SetParent(equippedItemSlot);
+        RectTransform itemRect = itemInventory.GetComponent<RectTransform>();
+        itemRect.anchoredPosition3D = Vector3.zero;
+        itemRect.localScale = Vector2.one;
+
+        itemInventory.GetComponent<ItemInventory>().SetItem(usableItem);
+        ItemSlot itemSlot = equippedItemSlot.GetComponent<ItemSlot>();
+        itemSlot.OnSlotDrop += () => { usableItem = equippedItemSlot.GetChild(0).gameObject.GetComponent<ItemInventory>().GetItem(); };
+        itemSlot.OnSlotEmpty += () => { usableItem = null; };
     }
 
     public void UseAbility()
     {
+        FightController.instance.playerTurn = false;
         anim.SetBool("Ability", true);
         StartCoroutine(UseAbilityCoroutine());
     }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class DifficultyProgression
@@ -11,6 +12,12 @@ public class DifficultyProgression
     int earlyGameBorder = 3;
     int midGameBorder = 6;
     int lateGameBorder = 9;
+
+    int itemsDropped = 0;
+    int itemDropFrequency = 3;
+    int currentEnemiesNum;
+
+    List<Item> itemsAlreadyDropped = new List<Item> ();
 
 
     public void IncrementFightNumber()
@@ -58,11 +65,35 @@ public class DifficultyProgression
         }
 
         prevEnemiesTotal += enemies.Length;
+        currentEnemiesNum = enemies.Length;
         return enemies;
     }
 
-    Item[] GetItemsDrop()
+    public Item[] GetItemsDrop()
     {
-        return new Item[0];
+        List<Item> items = new List<Item>();
+
+        if (Random.value > 1/currentEnemiesNum)
+        {
+            if (Random.value > 0.8f* Mathf.Clamp01((itemsDropped + 1)*itemDropFrequency)/fightNumber)
+            {
+                Item[] possibleItems = ItemManager.instance.weapons.Where(i => !itemsAlreadyDropped.Contains(i)).ToArray();
+                if (possibleItems.Length > 0)
+                {
+                    Item i = possibleItems[Random.Range(0, possibleItems.Length)];
+                    itemsAlreadyDropped.Add(i);
+                    items.Add(i.Copy());
+                    itemsDropped++;
+                }
+            }
+            if (Random.value > 0.97f)
+                items.Add(ItemManager.instance.cheese.Copy());
+            else if (Random.value > 0.93f)
+                items.Add(ItemManager.instance.apple.Copy());
+            else
+                items.Add(ItemManager.instance.commonHeal.Copy());
+        }
+
+        return items.ToArray();
     }
 }
