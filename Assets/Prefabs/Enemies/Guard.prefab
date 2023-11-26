@@ -121,8 +121,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c356e7106d20a444be809c82863f1be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalHealth: 30
-  usableItem: {fileID: 0}
+  totalHealth: 28
+  usableItem: {fileID: 11400000, guid: cc5a36af46ab14448a36e640b52c20be, type: 2}
   isDead: 0
   name: Guard
 --- !u!61 &-1849761516199857230

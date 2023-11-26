@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 [CreateAssetMenu(menuName = "ItemLibrary", fileName = "new ItemLibrary")]
 public class ItemActionsLibrary : ScriptableObject
@@ -70,6 +72,19 @@ public class ItemActionsLibrary : ScriptableObject
         character.Heal(Mathf.RoundToInt(character.maxHealth/2));
     }
 
+    public void Bomb()
+    {
+        foreach(Enemy e in FightController.instance.currentFight.enemies)
+        {
+            e.TakeDamage(10);
+        }
+    }
+    public void HolyArrow()
+    {
+        Enemy target = FightController.instance.currentFight.enemies.OrderByDescending(e => e.health).FirstOrDefault();
+        target.TakeDamage(target.health);
+    }
+
 
     public void LongSword()
     {
@@ -87,7 +102,7 @@ public class ItemActionsLibrary : ScriptableObject
     {
         Character[] characters = FightController.instance.currentFight.characters.Where(c => !c.isDead).OrderBy(c => Random.value).ToArray();
         for (int i = 0; i < (characters.Length > 2 ? 2 : characters.Length); i++)
-            characters[characters.Length - 1 - i].TakeDamage(2);
+            characters[characters.Length - 1 - i].TakeDamage(1);
     }
     public void GoblinItem()
     {
@@ -113,5 +128,34 @@ public class ItemActionsLibrary : ScriptableObject
         }
         else
             characters[0].TakeDamage(4);
+    }
+    public void BanditItem()
+    {
+        Character[] characters = FightController.instance.currentFight.characters.Where(c => !c.isDead).OrderBy(c => Random.value).ToArray();
+        for (int i = 0; i < (characters.Length > 2 ? 2 : characters.Length); i++)
+            characters[characters.Length - 1 - i].TakeDamage(3);
+    }
+
+    public void SlimeItem()
+    {
+        Character[] characters = FightController.instance.currentFight.characters.Where(c => !c.isDead).OrderBy(c => Random.value).ToArray();
+        characters[Random.Range(0, characters.Length)].TakeDamage(4);
+        Enemy[] slimes = FightController.instance.currentFight.enemies.Where(e => e.usableItem.CompareEffect(SlimeItem)).ToArray();
+        foreach (Enemy s in slimes) 
+        {
+            s.Heal(2);
+        }
+    }
+
+    public void ShadowItem()
+    {
+        FightController.instance.currentFight.characters.Where(c => !c.isDead).OrderByDescending(c => c.health).FirstOrDefault().TakeDamage(8);
+    }
+
+    public void GuardItem()
+    {
+        Character[] characters = FightController.instance.currentFight.characters.Where(c => !c.isDead).OrderByDescending(c => c.health).ToArray();
+        for (int i = 0; i < characters.Length; i++)
+            characters[i].TakeDamage(4 - i);
     }
 }

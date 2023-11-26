@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   totalHealth: 22
-  usableItem: {fileID: 0}
+  usableItem: {fileID: 11400000, guid: 8a16280cbbe341c4e8e0ae34a5ff7689, type: 2}
   isDead: 0
   name: Bandit
 --- !u!61 &7304459029895447348

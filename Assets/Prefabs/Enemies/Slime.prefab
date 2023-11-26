@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   totalHealth: 25
-  usableItem: {fileID: 0}
+  usableItem: {fileID: 11400000, guid: 53725a20e679f8d4e88561b09ea5656d, type: 2}
   isDead: 0
   name: Slime
 --- !u!61 &-2133418462200348597

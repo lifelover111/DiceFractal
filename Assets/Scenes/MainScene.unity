@@ -368,7 +368,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.26415092, g: 0.14585571, b: 0.03862584, a: 0}
+  m_BackGroundColor: {r: 0.1509434, g: 0.09660677, b: 0.047703806, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -4379,10 +4379,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   earlyEnemies:
-  - {fileID: 3941857743809933676, guid: da450cddd17e8a646b29a7172adf36bc, type: 3}
-  - {fileID: 7464517152543549298, guid: 3f0433b78ee854a459e2a32c539f1d6d, type: 3}
-  - {fileID: 7898151367119493024, guid: 0cd36c4587082994b91b3a6065dec910, type: 3}
   - {fileID: 1552150392861694243, guid: 559dc8ec876d3eb4dadb41b1f954c949, type: 3}
+  - {fileID: 7898151367119493024, guid: 0cd36c4587082994b91b3a6065dec910, type: 3}
+  - {fileID: 7464517152543549298, guid: 3f0433b78ee854a459e2a32c539f1d6d, type: 3}
+  - {fileID: 3941857743809933676, guid: da450cddd17e8a646b29a7172adf36bc, type: 3}
   midEnemies:
   - {fileID: 3125805313448429473, guid: 282eafeedba5e4c4099fd972ffccf1e2, type: 3}
   - {fileID: 4365152472792781055, guid: ca8fa77b378b7d94f8ef763d40157c6a, type: 3}
@@ -4435,6 +4435,7 @@ MonoBehaviour:
   commonHeal: {fileID: 11400000, guid: 575c13fb10b6248458ede0462b20eaa9, type: 2}
   weapons:
   - {fileID: 11400000, guid: 51e5dcbfcad99a943940dd16cca4261f, type: 2}
+  disposableItems: []
 --- !u!1 &967007970
 GameObject:
   m_ObjectHideFlags: 0

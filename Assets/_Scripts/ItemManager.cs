@@ -10,6 +10,7 @@ public class ItemManager : MonoBehaviour
     public Item apple;
     public Item commonHeal;
     public Item[] weapons;
+    public Item[] disposableItems;
 
     private void Awake()
     {
