@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     public int damageTaken = 0;
     public int healthRestored = 0;
 
+    public AudioSource mainSound;
 
     DifficultyProgression progression;
 

@@ -16,6 +16,8 @@ public class DiceThrow : MonoBehaviour
     public event System.Action OnValueGot = () => { };
     public static System.Action DestroyAllDicesDelegate = () => { };
 
+    public AudioSource diceThrowAudio;
+
     void Start()
     {
         DestroyAllDicesDelegate += DestroyThis;
@@ -24,6 +26,20 @@ public class DiceThrow : MonoBehaviour
     private void OnDestroy()
     {
         DestroyAllDicesDelegate -= DestroyThis;
+    }
+
+
+    void OnCollisionEnter(Collision collision)
+    {
+        // ѕровер€ем, что столкновение произошло с кубиком
+        if (collision.gameObject)
+        {
+            // ¬оспроизводим звук удара кости
+            if (diceThrowAudio != null)
+            {
+                diceThrowAudio.Play();
+            }
+        }
     }
 
     public void ThrowDice()
@@ -37,8 +53,10 @@ public class DiceThrow : MonoBehaviour
         diceRigidbody.AddTorque(Random.insideUnitSphere * force, ForceMode.Impulse);
         diceRigidbody.AddTorque(Random.insideUnitSphere * force * 1.5f, ForceMode.Impulse);
         //diceRigidbody.AddForce(Random.onUnitSphere * force, ForceMode.Impulse);
+        //diceThrowAudio.Play();
         StartCoroutine(GetUpperSideNumberCoroutine());
     }
+
 
     IEnumerator GetUpperSideNumberCoroutine()
     {

@@ -15,6 +15,8 @@ public class FightController : MonoBehaviour
     public bool playerTurn { get; set; }
     bool itemsTaken = false;
 
+    public AudioSource clickSound;
+
     private void Awake()
     {
         instance = this;
@@ -30,6 +32,7 @@ public class FightController : MonoBehaviour
     public void EndTurn()
     {
         playerTurn = false;
+        clickSound.Play();
         currentFight.EndTurn();
         endTurnButton.gameObject.SetActive(false);
         foreach (var c in currentFight.characters)
