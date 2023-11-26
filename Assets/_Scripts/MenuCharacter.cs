@@ -10,6 +10,8 @@ public class MenuCharacter : MonoBehaviour
     bool chosen = false;
     bool mouseOn = false;
 
+    public AudioSource selectSound;
+
     private void Awake()
     {
         glow = transform.GetChild(0);
@@ -27,6 +29,7 @@ public class MenuCharacter : MonoBehaviour
 
     private void OnMouseDown()
     {
+       
         GameInfo.instance.gameObject.SetActive(false);
         if (PartyKeeper.instance.GetParty().Count >= 3 && !chosen)
             return;
@@ -66,6 +69,7 @@ public class MenuCharacter : MonoBehaviour
         glowSpriteRend.color = color;
         chosen = !chosen;
         PartyKeeper.instance.PartyAdd(characterPrefab);
+        selectSound.Play();
     }
 
     void UnchooseThis()

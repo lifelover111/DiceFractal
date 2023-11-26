@@ -13,6 +13,8 @@ public class MainMenu : MonoBehaviour
 
     public event System.Action OnNewGameBack = delegate { };
 
+    public AudioSource mainMenuSound;
+
     private void Awake()
     {
         instance = this;
@@ -20,6 +22,8 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
+        mainMenuSound.Play();
+
         PartyKeeper.instance.OnCharacterAdd += () =>
         {
             if (PartyKeeper.instance.GetParty().Count == 3)
