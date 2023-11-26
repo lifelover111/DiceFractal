@@ -23,6 +23,11 @@ public class FightController : MonoBehaviour
         playerTurn = false;
     }
 
+    private void Start()
+    {
+        foreach (var c in currentFight.characters)
+            c.abilityTurnButton.GetComponent<Button>().onClick.AddListener(() => { clickSound.Play(); });
+    }
 
     public void DoTurn()
     {

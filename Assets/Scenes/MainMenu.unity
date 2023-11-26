@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44402188, g: 0.4931649, b: 0.57223135, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1453,7 +1453,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -3364,6 +3364,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterPrefab: {fileID: 5327462455439876495, guid: 2bc372a7820fcd04ea1a46b9cb6178e8, type: 3}
+  name: "\u0440\u0430\u0437\u0431\u043E\u0439\u043D\u0438\u043A"
+  description: 
   selectSound: {fileID: 1005615767}
 --- !u!61 &5955132682419004564
 BoxCollider2D:
@@ -3507,6 +3509,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterPrefab: {fileID: 4364526582221451527, guid: 08a8bb1598252ee45ab6fcd6a3bee55a, type: 3}
+  name: "\u0441\u0430\u043C\u0443\u0440\u0430\u0439"
+  description: 
   selectSound: {fileID: 1005615767}
 --- !u!61 &6607150688965970767
 BoxCollider2D:
@@ -3618,6 +3622,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterPrefab: {fileID: 4535556270299444574, guid: 8128ccca889b66043a0f6613953109e5, type: 3}
+  name: "\u0447\u0435\u0440\u043D\u043E\u043A\u043D\u0438\u0436\u043D\u0438\u043A"
+  description: 
   selectSound: {fileID: 1005615767}
 --- !u!61 &6775773763192903827
 BoxCollider2D:
@@ -3734,6 +3740,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterPrefab: {fileID: 5826634412581805023, guid: 068fc420ecbeafe44925c9114e85389d, type: 3}
+  name: "\u043C\u0430\u0433 \u043E\u0433\u043D\u044F"
+  description: 
   selectSound: {fileID: 1005615767}
 --- !u!61 &7079091071381176259
 BoxCollider2D:
@@ -3813,6 +3821,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterPrefab: {fileID: 7646613129632883628, guid: b31744743acb6704a9f64f13689b169a, type: 3}
+  name: "\u0431\u043E\u0435\u0432\u043E\u0439 \u0436\u0440\u0435\u0446"
+  description: 
   selectSound: {fileID: 1005615767}
 --- !u!61 &7646613129080909918
 BoxCollider2D:
@@ -3933,6 +3943,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterPrefab: {fileID: 7031665775581891573, guid: 33fdf2fb83344fa41ad0be42a5fca0e6, type: 3}
+  name: "\u0432\u043E\u0438\u043D"
+  description: 
   selectSound: {fileID: 1005615767}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

@@ -149,7 +149,7 @@ public class ItemActionsLibrary : ScriptableObject
 
     public void ShadowItem()
     {
-        FightController.instance.currentFight.characters.Where(c => !c.isDead).OrderByDescending(c => c.health).FirstOrDefault().TakeDamage(8);
+        FightController.instance.currentFight.characters.Where(c => !c.isDead).OrderByDescending(c => c.health).FirstOrDefault().TakeDamage(7);
     }
 
     public void GuardItem()

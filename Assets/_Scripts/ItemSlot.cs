@@ -26,5 +26,7 @@ public class ItemSlot : MonoBehaviour, IDropHandler
     {
         yield return new WaitWhile(() => { return transform.childCount == 0; });
         OnSlotDrop?.Invoke();
+        if(isActiveSlot)
+            FightController.instance.clickSound.Play();
     }
 }

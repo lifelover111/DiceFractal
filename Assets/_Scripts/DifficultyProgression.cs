@@ -9,9 +9,9 @@ public class DifficultyProgression
     int prevEnemiesTotal = 1;
     int enemyCountM = 2;
 
-    int earlyGameBorder = 3;
-    int midGameBorder = 6;
-    int lateGameBorder = 9;
+    float earlyGameBorder = 3;
+    float midGameBorder = 6;
+    float lateGameBorder = 12;
 
     int itemsDropped = 0;
     int itemDropFrequency = 3;
@@ -44,11 +44,12 @@ public class DifficultyProgression
                 }
             }
 
+
         Enemy[] enemies = new Enemy[enemyCount];
         for (int i = 0; i < enemyCount; i++)
         {
             GameObject enemy;
-            if(Random.value > 1 - ((fightNumber - midGameBorder) / lateGameBorder))
+            if(Random.value > 1 - ((fightNumber - midGameBorder*1.25f) / lateGameBorder))
             {
                 enemy = Object.Instantiate(EnemyPrefabManager.instance.lateEnemies[Random.Range(0, EnemyPrefabManager.instance.lateEnemies.Length)]);
             }
@@ -73,9 +74,9 @@ public class DifficultyProgression
     {
         List<Item> items = new List<Item>();
 
-        if (Random.value > 1/currentEnemiesNum)
+        if (Random.value > Mathf.Sqrt(1/currentEnemiesNum))
         {
-            if (Random.value > 0.8f* Mathf.Clamp01((itemsDropped + 1)*itemDropFrequency)/fightNumber)
+            if (Random.value > 0.75f* Mathf.Clamp01((itemsDropped + 1)*itemDropFrequency)/fightNumber)
             {
                 if (Random.value > 0.5)
                 {
@@ -84,6 +85,12 @@ public class DifficultyProgression
                     {
                         Item i = possibleItems[Random.Range(0, possibleItems.Length)];
                         itemsAlreadyDropped.Add(i);
+                        items.Add(i.Copy());
+                        itemsDropped++;
+                    }
+                    else
+                    {
+                        Item i = ItemManager.instance.disposableItems[Random.Range(0, ItemManager.instance.disposableItems.Length)];
                         items.Add(i.Copy());
                         itemsDropped++;
                     }
@@ -97,7 +104,7 @@ public class DifficultyProgression
             }
             if (Random.value > 0.97f)
                 items.Add(ItemManager.instance.cheese.Copy());
-            else if (Random.value > 0.93f)
+            else if (Random.value > 0.9f)
                 items.Add(ItemManager.instance.apple.Copy());
             else
                 items.Add(ItemManager.instance.commonHeal.Copy());
