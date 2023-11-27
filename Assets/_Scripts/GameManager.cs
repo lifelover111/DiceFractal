@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject damageEffectPrefab;
     [SerializeField] public GameObject inventoryItemPrefab;
 
+    [SerializeField] Transform pauseMenu;
+
     [SerializeField] Transform[] abilityEndTurnButtons;
     [SerializeField] Transform[] equippedItemSlots;
     Character[] characters = new Character[3];
@@ -59,6 +61,21 @@ public class GameManager : MonoBehaviour
         fight.OnFightEnd += () => { battlesWon++; };
         fight.OnFightEnd += NewFight;
         fight.StartFight();
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            pauseMenu.gameObject.SetActive(true);
+            Time.timeScale = 0;
+        }
+    }
+
+    public void Continue()
+    {
+        pauseMenu.gameObject.SetActive(false);
+        Time.timeScale = 1;
     }
 
     void SetCharacters()
@@ -158,6 +175,7 @@ public class GameManager : MonoBehaviour
 
     public void BackToMainMenu()
     {
+        Time.timeScale = 1.0f;
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 
