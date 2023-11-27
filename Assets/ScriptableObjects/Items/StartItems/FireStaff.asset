@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c503eeb849139ac4eab39b715ebf4662, type: 3}
   m_Name: FireStaff
   m_EditorClassIdentifier: 
+  name: "\u041F\u043E\u0441\u043E\u0445 \u043E\u0433\u043D\u044F"
   isDisposable: 0
   price:
     suitableDices: 05000000

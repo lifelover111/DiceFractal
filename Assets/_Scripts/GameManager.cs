@@ -70,7 +70,9 @@ public class GameManager : MonoBehaviour
             characters[2 - i].abilityTurnButton = abilityEndTurnButtons[2 - i];
             characters[2 - i].transform.SetParent(party.transform, true);
 
-            characters[2 - i].abilityTurnButton.GetComponent<Button>().interactable = false;
+            Button button = characters[2 - i].abilityTurnButton.GetComponent<Button>();
+            button.interactable = false;
+            button.onClick.AddListener(() => { button.interactable = false; });
 
             characters[2 - i].equippedItemSlot = equippedItemSlots[2 - i];
         }

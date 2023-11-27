@@ -124,7 +124,7 @@ MonoBehaviour:
   totalHealth: 25
   usableItem: {fileID: 11400000, guid: 53725a20e679f8d4e88561b09ea5656d, type: 2}
   isDead: 0
-  name: Slime
+  name: "\u0421\u043B\u0438\u0437\u044C"
 --- !u!61 &-2133418462200348597
 BoxCollider2D:
   m_ObjectHideFlags: 0

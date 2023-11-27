@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class Enemy : Person
 {
-    [SerializeField] string name;
+    [SerializeField] new string name;
     private void Start()
     {
         FightController.instance.currentFight.OnFightEnd += () => { Destroy(gameObject); };

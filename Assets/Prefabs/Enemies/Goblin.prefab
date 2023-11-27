@@ -124,7 +124,7 @@ MonoBehaviour:
   totalHealth: 12
   usableItem: {fileID: 11400000, guid: 6816a6f5c60b4604ab8a054365f58d48, type: 2}
   isDead: 0
-  name: Goblin
+  name: "\u0413\u043E\u0431\u043B\u0438\u043D"
 --- !u!61 &4111702550728924406
 BoxCollider2D:
   m_ObjectHideFlags: 0

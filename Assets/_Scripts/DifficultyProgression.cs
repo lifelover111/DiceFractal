@@ -76,9 +76,9 @@ public class DifficultyProgression
 
         if (Random.value > Mathf.Sqrt(1/currentEnemiesNum))
         {
-            if (Random.value > 0.75f* Mathf.Clamp01((itemsDropped + 1)*itemDropFrequency)/fightNumber)
+            if (Random.value > 0.8f* Mathf.Sqrt(Mathf.Clamp01((itemsDropped + 1)*itemDropFrequency)/fightNumber))
             {
-                if (Random.value > 0.5)
+                if (Random.value > 0.666f)
                 {
                     Item[] possibleItems = ItemManager.instance.weapons.Where(i => !itemsAlreadyDropped.Contains(i)).ToArray();
                     if (possibleItems.Length > 0)

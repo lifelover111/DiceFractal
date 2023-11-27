@@ -26,7 +26,12 @@ public class FightController : MonoBehaviour
     private void Start()
     {
         foreach (var c in currentFight.characters)
-            c.abilityTurnButton.GetComponent<Button>().onClick.AddListener(() => { clickSound.Play(); });
+            c.abilityTurnButton.GetComponent<Button>().onClick.AddListener(() => 
+            { 
+                clickSound.Play();
+                foreach (var ch in currentFight.characters)
+                    ch.abilityTurnButton.GetComponent<Button>().interactable = false;
+            });
     }
 
     public void DoTurn()
@@ -37,11 +42,11 @@ public class FightController : MonoBehaviour
     public void EndTurn()
     {
         playerTurn = false;
-        clickSound.Play();
+        clickSound.Play(); 
+        foreach (var ch in currentFight.characters)
+            ch.abilityTurnButton.GetComponent<Button>().interactable = false;
         currentFight.EndTurn();
         endTurnButton.gameObject.SetActive(false);
-        foreach (var c in currentFight.characters)
-            c.abilityTurnButton.GetComponent<Button>().interactable = false; 
     }
 
     public void EndTurnAbility(int dice)

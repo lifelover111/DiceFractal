@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c503eeb849139ac4eab39b715ebf4662, type: 3}
   m_Name: Bomb
   m_EditorClassIdentifier: 
+  name: "\u0411\u043E\u043C\u0431\u0430"
   isDisposable: 1
   price:
     suitableDices: 0300000004000000

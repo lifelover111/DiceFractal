@@ -124,7 +124,7 @@ MonoBehaviour:
   totalHealth: 20
   usableItem: {fileID: 11400000, guid: aee0dff7227150c4abf9e0e8ebffdab8, type: 2}
   isDead: 0
-  name: Shadow
+  name: "\u0422\u0435\u043D\u044C"
 --- !u!61 &3912180375756096932
 BoxCollider2D:
   m_ObjectHideFlags: 0

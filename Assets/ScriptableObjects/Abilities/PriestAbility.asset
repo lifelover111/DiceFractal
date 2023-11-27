@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e6ba6166e30f224e90323899cd6da56, type: 3}
   m_Name: PriestAbility
   m_EditorClassIdentifier: 
+  name: "\u041C\u0430\u0441\u0441\u043E\u0432\u043E\u0435 \u0438\u0441\u0446\u0435\u043B\u0435\u043D\u0438\u0435"
   abilityIcon: {fileID: 21300000, guid: feb8709f10385a94095b55fe8d0f625c, type: 3}
   OnUse:
     m_PersistentCalls:

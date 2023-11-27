@@ -19,6 +19,8 @@ public class Item : ScriptableObject
         }
     }
 
+    public new string name;
+
     [SerializeField] bool isDisposable = false;
     [SerializeField] Cost price;
     [SerializeField] UnityEvent action;

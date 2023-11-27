@@ -10,6 +10,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] Transform newGameMenu;
     [SerializeField] Transform charactersMenu;
     [SerializeField] Transform startGameButton;
+    [SerializeField] Transform tutorial;
 
     public event System.Action OnNewGameBack = delegate { };
 
@@ -59,5 +60,12 @@ public class MainMenu : MonoBehaviour
     public void Exit()
     {
         Application.Quit();
+    }
+
+    public void Tutorial()
+    {
+        if (PlayerPrefs.GetInt("SkipTutorial") == 1)
+            return;
+        tutorial.gameObject.SetActive(true);
     }
 }

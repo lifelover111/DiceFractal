@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c503eeb849139ac4eab39b715ebf4662, type: 3}
   m_Name: Apple
   m_EditorClassIdentifier: 
+  name: "\u042F\u0431\u043B\u043E\u043A\u043E"
   isDisposable: 1
   price:
     suitableDices: 040000000500000006000000

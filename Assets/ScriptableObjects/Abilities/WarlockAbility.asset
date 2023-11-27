@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e6ba6166e30f224e90323899cd6da56, type: 3}
   m_Name: WarlockAbility
   m_EditorClassIdentifier: 
+  name: "\u0410\u0434\u0441\u043A\u043E\u0435 \u043F\u043B\u0430\u043C\u044F"
   abilityIcon: {fileID: 21300000, guid: eac3e2cd2f3070a4cb2521c534e1964f, type: 3}
   OnUse:
     m_PersistentCalls:

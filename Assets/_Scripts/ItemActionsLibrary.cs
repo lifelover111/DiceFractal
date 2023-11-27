@@ -93,6 +93,118 @@ public class ItemActionsLibrary : ScriptableObject
         FightController.instance.currentFight.enemies[Random.Range(0, FightController.instance.currentFight.enemies.Length)]?.TakeDamage(5);
     }
 
+    public void VampireSword()
+    {
+        if (FightController.instance.currentFight.enemies.Length < 1)
+            return;
+        Enemy target = FightController.instance.currentFight.enemies[Random.Range(0, FightController.instance.currentFight.enemies.Length)];
+        float damage = target.health > 5 ? 5 : target.health;
+        target.TakeDamage(damage);
+        FightController.instance.currentFight.characters.Where(c => c.usableItem.CompareEffect(VampireSword)).FirstOrDefault().Heal(5);
+    }
+
+    public void LongBow()
+    {
+        FightController.instance.currentFight.enemies.OrderBy(e => e.health).FirstOrDefault()?.TakeDamage(7);
+    }
+
+    public void CompositeBow()
+    {
+        int targets = FightController.instance.currentFight.enemies.Length >= 2 ? 2 : FightController.instance.currentFight.enemies.Length;
+        for (int i = 0; i < targets; i++)
+        {
+            FightController.instance.currentFight.enemies.OrderBy(e => e.health).ToArray()[i].TakeDamage(5);
+        }
+    }
+
+    public void WitheringStaff()
+    {
+        if (FightController.instance.currentFight.enemies.Length < 1)
+            return;
+        Character owner = FightController.instance.currentFight.characters.Where(c => c.usableItem.CompareEffect(WitheringStaff)).FirstOrDefault();
+        foreach (var e in FightController.instance.currentFight.enemies)
+        { 
+            e?.TakeDamage(2);
+            owner.Heal(1);
+        }
+    }
+
+    public void AssassinDagger()
+    {
+        FightController.instance.currentFight.enemies.OrderBy(e => e.health).FirstOrDefault()?.TakeDamage(4);
+    }
+
+    public void CursedUchigatana()
+    {
+        Enemy target = FightController.instance.currentFight.enemies.OrderByDescending(e => e.health).FirstOrDefault();
+        float targetHealth = target.health;
+        target.TakeDamage(8);
+        if(targetHealth <= 8)
+        {
+            FightController.instance.currentFight.characters.Where(c => c.usableItem.CompareEffect(CursedUchigatana)).FirstOrDefault().Heal(5);
+        }
+    }
+
+    public void HealPholiant()
+    {
+        foreach (Character ch in FightController.instance.currentFight.characters)
+            ch.Heal(3);
+        foreach (Enemy e in FightController.instance.currentFight.enemies)
+            e.Heal(3);
+    }
+
+    public void MagicalStaff()
+    {
+        float sumHealth = 0;
+        foreach(Enemy enemy in FightController.instance.currentFight.enemies)
+        {
+            sumHealth += enemy.health;
+        }
+        int c = Mathf.RoundToInt(sumHealth) / FightController.instance.currentFight.enemies.Length;
+        int o = Mathf.RoundToInt(sumHealth) - c;
+
+        foreach (Enemy enemy in FightController.instance.currentFight.enemies)
+        {
+            if (enemy.health > c)
+                enemy.TakeDamage(enemy.health - (c - (o > 0 ? 1 : 0)));
+            else
+                enemy.Heal((c + (o > 0 ? 1 : 0)) - enemy.health);
+            if (enemy.health != c)
+                o--;
+
+            enemy.TakeDamage(2);
+        }
+    }
+
+    public void ButcherKnife()
+    {
+        FightController.instance.currentFight.enemies[Random.Range(0, FightController.instance.currentFight.enemies.Length)]?.TakeDamage(8);
+    }
+
+    public void ArtoriasSword()
+    {
+        Enemy[] enemies = FightController.instance.currentFight.enemies.OrderBy(e => Random.value).ToArray();
+        for(int i = 0; i < (enemies.Length < 2 ? enemies.Length : 2); i++)
+        {
+            enemies[i].TakeDamage(6);
+        }
+    }
+    public void HunterKnife()
+    {
+        FightController.instance.currentFight.enemies.OrderByDescending(e => e.health).FirstOrDefault()?.TakeDamage(5);
+    }
+
+    public void AxeOfMadness()
+    {
+        int enemyCount = FightController.instance.currentFight.enemies.Length;
+        int target = Random.Range(0, enemyCount);
+        FightController.instance.currentFight.enemies[target].TakeDamage(7);
+        if (enemyCount < 2)
+            return;
+        int secondTarget = target + 1 > enemyCount - 1 ? target - 1 : target + 1;
+        FightController.instance.currentFight.enemies[secondTarget].TakeDamage(3);
+    }
+
     // Оружие противников
     public void SkeletonItem()
     {

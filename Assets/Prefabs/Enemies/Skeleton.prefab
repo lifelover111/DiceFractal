@@ -124,7 +124,7 @@ MonoBehaviour:
   totalHealth: 15
   usableItem: {fileID: 11400000, guid: f042811feb012b846ac3c4acb579c3d7, type: 2}
   isDead: 0
-  name: Skeleton
+  name: "\u0421\u043A\u0435\u043B\u0435\u0442-\u0432\u043E\u0438\u043D"
 --- !u!61 &-8960982234292898729
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -124,7 +124,7 @@ MonoBehaviour:
   totalHealth: 30
   usableItem: {fileID: 11400000, guid: 48f00a5dd34bee8469e29b92ce59e132, type: 2}
   isDead: 0
-  name: Bringer of death
+  name: "\u041D\u0435\u0441\u0443\u0449\u0438\u0439 \u0441\u043C\u0435\u0440\u0442\u044C"
 --- !u!61 &-2149090964700501384
 BoxCollider2D:
   m_ObjectHideFlags: 0

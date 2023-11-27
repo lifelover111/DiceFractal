@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e6ba6166e30f224e90323899cd6da56, type: 3}
   m_Name: MageAbility
   m_EditorClassIdentifier: 
+  name: "\u041F\u043E\u0442\u043E\u043A \u043F\u043B\u0430\u043C\u0435\u043D\u0438"
   abilityIcon: {fileID: 21300000, guid: dd3885098198d104888439be4c590aba, type: 3}
   OnUse:
     m_PersistentCalls:

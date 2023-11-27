@@ -5,7 +5,7 @@ using UnityEngine;
 public class MenuCharacter : MonoBehaviour
 {
     [SerializeField] GameObject characterPrefab;
-    [SerializeField] string name;
+    [SerializeField] new string name;
     [SerializeField] string description;
     Transform glow;
     SpriteRenderer glowSpriteRend;
@@ -44,7 +44,7 @@ public class MenuCharacter : MonoBehaviour
     {
         GameInfo.instance.gameObject.SetActive(true);
         Vector2 infoPosition = transform.position.x < 0 ? Camera.main.WorldToScreenPoint(transform.position) + 350*(Screen.width/1920) * Vector3.right : Camera.main.WorldToScreenPoint(transform.position) - 350 * (Screen.width / 1920) * Vector3.right;
-        GameInfo.instance.SetInfo(infoPosition, name, description);
+        GameInfo.instance.SetInfo(infoPosition, name, description + characterPrefab.GetComponent<Character>().usableItem.GetDescription());
 
         if (chosen)
             return;

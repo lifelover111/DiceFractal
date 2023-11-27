@@ -124,7 +124,7 @@ MonoBehaviour:
   totalHealth: 22
   usableItem: {fileID: 11400000, guid: 8a16280cbbe341c4e8e0ae34a5ff7689, type: 2}
   isDead: 0
-  name: Bandit
+  name: "\u0411\u0430\u043D\u0434\u0438\u0442"
 --- !u!61 &7304459029895447348
 BoxCollider2D:
   m_ObjectHideFlags: 0

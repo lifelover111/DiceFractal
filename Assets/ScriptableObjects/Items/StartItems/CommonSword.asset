@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c503eeb849139ac4eab39b715ebf4662, type: 3}
   m_Name: CommonSword
   m_EditorClassIdentifier: 
+  name: "\u041E\u0431\u044B\u0447\u043D\u044B\u0439 \u043C\u0435\u0447"
   isDisposable: 0
   price:
     suitableDices: 0300000004000000
