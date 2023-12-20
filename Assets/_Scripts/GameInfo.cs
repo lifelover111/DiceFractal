@@ -25,7 +25,7 @@ public class GameInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public IEnumerator Close()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0f);
         gameObject.SetActive(false);
     }
 
