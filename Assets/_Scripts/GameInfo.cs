@@ -7,6 +7,8 @@ using UnityEngine.EventSystems;
 public class GameInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public static GameInfo instance;
+
+
     [SerializeField] TMP_Text title;
     [SerializeField] TMP_Text description;
 
@@ -23,11 +25,16 @@ public class GameInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         transform.position = position;
     }
 
-    public IEnumerator Close()
+    //public IEnumerator Close()
+    //{
+    //    yield return new WaitForSeconds(0f);
+    //    gameObject.SetActive(false);
+    //}
+    public void Close()
     {
-        yield return new WaitForSeconds(0f);
         gameObject.SetActive(false);
     }
+
 
     public void OnPointerEnter(PointerEventData eventData)
     {

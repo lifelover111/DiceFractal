@@ -52,15 +52,28 @@ public class AbilityButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     }
 
 
+
+    //public void OnPointerExit(PointerEventData eventData)
+    //{
+    //    if(GameInfo.instance.transform.gameObject.activeInHierarchy)
+    //        GameInfo.instance.StartCoroutine(GameInfo.instance.Close());
+    //}
+
+
     public void OnPointerEnter(PointerEventData eventData)
     {
+  
         GameInfo.instance.gameObject.SetActive(true);
-        GameInfo.instance.SetInfo(transform.position + 100*Vector3.right, ability.name, ability.GetDescription());
+        GameInfo.instance.SetInfo(transform.position + 100 * Vector3.right, ability.name, ability.GetDescription());
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if(GameInfo.instance.transform.gameObject.activeInHierarchy)
-            GameInfo.instance.StartCoroutine(GameInfo.instance.Close());
+        if (GameInfo.instance.gameObject.activeInHierarchy)
+        {
+            GameInfo.instance.Close(); 
+            GameInfo.instance.gameObject.SetActive(false);
+        }
     }
+
 }

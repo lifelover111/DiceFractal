@@ -25,6 +25,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] Item[] additionalStartItems;
 
+    [SerializeField] GameObject tooltip;
+
     public int battlesWon = 0;
     public int enemiesKilled = 0;
     public int damageDealed = 0;
@@ -70,7 +72,14 @@ public class GameManager : MonoBehaviour
             pauseMenu.gameObject.SetActive(true);
             Time.timeScale = 0;
         }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            tooltip.SetActive(!tooltip.activeSelf);
+        }
     }
+
+
 
     public void Continue()
     {

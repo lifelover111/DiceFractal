@@ -13,6 +13,8 @@ public class Character : Person
     public event System.Action OnAbilityUse = () => { };
     public event System.Action OnCharacterDied = () => { };
 
+    public AudioSource abilityAudioSource;
+
     private void Start()
     {
         UnityEngine.UI.Button button = abilityTurnButton.gameObject.GetComponent<UnityEngine.UI.Button>();
@@ -37,6 +39,10 @@ public class Character : Person
     {
         FightController.instance.playerTurn = false;
         anim.SetBool("Ability", true);
+        if (abilityAudioSource != null)
+        {
+            abilityAudioSource.Play();
+        }
         StartCoroutine(UseAbilityCoroutine());
     }
 
@@ -45,11 +51,36 @@ public class Character : Person
         while (anim.GetBool("Ability"))
             yield return null;
         ability.Use();
+     
         OnAbilityUse?.Invoke();
+    }
+
+    //public override IEnumerator UseItem(int dice)
+    //{
+    //    if (abilityAudioSource != null)
+    //    {
+    //        abilityAudioSource.Play();
+    //    }
+    //    base.UseItem(dice);
+    //    yield return null;
+    //}
+
+    public override IEnumerator UseItem(int dice)
+    {
+        if (abilityAudioSource != null)
+        {
+            abilityAudioSource.Play();
+        }
+        anim.SetBool("Item", true);
+
+        while (anim.GetBool("Item"))
+            yield return null;
+        usableItem.Use(dice);
     }
 
     public override void TakeDamage(float damage)
     {
+ 
         base.TakeDamage(damage);
         GameManager.instance.damageTaken += Mathf.RoundToInt(damage);
     }

@@ -39,9 +39,10 @@ public abstract class Person : MonoBehaviour, IHealth
     }
 
 
-    public IEnumerator UseItem(int dice)
+    public virtual IEnumerator UseItem(int dice)
     {
         anim.SetBool("Item", true);
+
         while (anim.GetBool("Item"))
             yield return null;
         usableItem.Use(dice);

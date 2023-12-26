@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 public class Enemy : Person
 {
     [SerializeField] new string name;
+
+    public AudioSource abilityAudioSource;
     private void Start()
     {
         FightController.instance.currentFight.OnFightEnd += () => { Destroy(gameObject); };
@@ -25,6 +27,19 @@ public class Enemy : Person
     public override void Heal(float heal)
     {
         base.Heal(heal);
+    }
+
+    public override IEnumerator UseItem(int dice)
+    {
+        if (abilityAudioSource != null)
+        {
+            abilityAudioSource.Play();
+        }
+        anim.SetBool("Item", true);
+       
+        while (anim.GetBool("Item"))
+            yield return null;
+        usableItem.Use(dice);
     }
 
     public void SetIdle()

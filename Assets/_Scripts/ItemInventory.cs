@@ -24,16 +24,30 @@ public class ItemInventory : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         return item;
     }
 
+
+    //public void OnPointerExit(PointerEventData eventData)
+    //{
+    //    if (GameInfo.instance.transform.gameObject.activeInHierarchy)
+    //        GameInfo.instance.StartCoroutine(GameInfo.instance.Close());
+    //}
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         GameInfo.instance.gameObject.SetActive(true);
-        Vector2 pos = transform.parent.position + Vector3.up * 750 + Vector3.right * 1000;
+
+        Vector2 pos = transform.position + Vector3.up * 600 + Vector3.right * 1150;
+   
         GameInfo.instance.SetInfo(pos, item.name, item.GetDescription());
     }
 
+
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (GameInfo.instance.transform.gameObject.activeInHierarchy)
-            GameInfo.instance.StartCoroutine(GameInfo.instance.Close());
+        if (GameInfo.instance.gameObject.activeInHierarchy)
+        {
+            GameInfo.instance.Close(); 
+            GameInfo.instance.gameObject.SetActive(false);
+        }
     }
+
 }
